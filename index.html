@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARC – Calculadora de Aspect Ratio</title>
+    <meta name="description" content="Calculadora profesional de relación de aspecto para producción audiovisual y LED.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #09090b;
+            --card: rgba(24, 24, 27, 0.5);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --accent: #6d28d9;
+            --accent2: #a78bfa;
+            --text: #fafafa;
+            --muted: #a1a1aa;
+            --input-bg: rgba(0, 0, 0, 0.4);
+            --input-border: rgba(255, 255, 255, 0.08);
+            --input-focus: #8b5cf6;
+            --success: #10b981;
+            --radius: 20px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 1.5rem;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(109, 40, 217, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(56, 189, 248, 0.1) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #fff 10%, var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: var(--muted);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            font-weight: 400;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 420px;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        @media (max-width: 1000px) {
+            .dashboard-container { grid-template-columns: 1fr; }
+        }
+
+        .main-pane { display: flex; flex-direction: column; gap: 1.5rem; }
+        .side-pane { display: flex; flex-direction: column; gap: 1.5rem; }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 30px -4px rgba(0,0,0,0.3);
+        }
+
+        .card:hover { border-color: rgba(167, 139, 250, 0.15); box-shadow: 0 8px 40px -4px rgba(0,0,0,0.4); }
+
+        .card h2 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card h2::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background: var(--accent2);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(167,139,250,0.5);
+        }
+
+        /* ── Inputs ── */
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .input-row span {
+            color: var(--muted);
+            font-size: 1.25rem;
+            font-weight: 300;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.02em;
+            font-weight: 500;
+        }
+
+        input[type="number"], input[type="text"], select {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.2s ease;
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button { display: none; }
+
+        input:focus, select:focus {
+            border-color: var(--accent2);
+            background: rgba(255,255,255,0.04);
+            box-shadow: 0 0 0 3px rgba(167,139,250,0.15);
+        }
+
+        select option { background: #18181b; }
+
+        /* ── Result badge ── */
+        .result-badge {
+            margin-top: 1.5rem;
+            background: rgba(0,0,0,0.25);
+            border: 1px solid var(--input-border);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-badge .label { font-size: 0.8rem; color: var(--muted); }
+        .result-badge .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ── Presets ── */
+        .presets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 0.5rem;
+        }
+
+        .preset-btn {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+            padding: 0.5rem 0.9rem;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(167,139,250,0.4);
+            transform: translateY(-2px);
+        }
+
+        .preset-btn.active {
+            background: rgba(167,139,250,0.15);
+            border-color: var(--accent2);
+            color: var(--text);
+            box-shadow: 0 4px 12px rgba(167,139,250,0.15);
+        }
+
+        /* ── Info grid ── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .info-cell {
+            background: rgba(0,0,0,0.25);
+            border: 1px solid var(--input-border);
+            border-radius: 14px;
+            padding: 1rem;
+            text-align: left;
+            transition: background 0.2s;
+        }
+        
+        .info-cell:hover { background: rgba(255,255,255,0.03); }
+
+        .info-cell .ic-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;}
+        .info-cell .ic-value { font-size: 1.25rem; font-weight: 700; color: var(--text); margin-top: 0.35rem; }
+
+        /* ── Buttons ── */
+        .row3 { display: flex; gap: 1rem; align-items: flex-end; }
+        .row3 .field { flex: 1; }
+
+        .calc-btn {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 0.85rem 1.4rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            box-shadow: 0 4px 14px rgba(109, 40, 217, 0.3);
+        }
+
+        .calc-btn:hover { box-shadow: 0 6px 20px rgba(109, 40, 217, 0.4); transform: translateY(-2px); filter: brightness(1.1); }
+        .calc-btn:active { transform: translateY(0); box-shadow: 0 2px 8px rgba(109, 40, 217, 0.3); }
+
+        .inv-result {
+            margin-top: 1.25rem;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--success);
+            min-height: 1.5rem;
+            padding-left: 0.25rem;
+        }
+
+        footer {
+            margin-top: 4rem;
+            color: var(--muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            opacity: 0.6;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>⬛ ARC</h1>
+    <p>Calculadora de Aspect Ratio · Producción Audiovisual</p>
+</header>
+
+<div class="dashboard-container">
+
+    <!-- ─── PANEL PRINCIPAL ─── -->
+    <div class="main-pane">
+
+    <!-- ─── Card 1: Cálculo de Escalado ─── -->
+    <div class="card">
+        <h2>Cálculo de Escalado (Upscale / Downscale)</h2>
+        <p style="color:var(--muted);font-size:0.8rem;margin-bottom:1.25rem;">Compara la resolución de tu contenido con la de la pantalla/procesador.</p>
+        
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; max-width: none;">
+            <div>
+                <label style="margin-bottom:0.5rem; display:block;">Resolución de Contenido (Media)</label>
+                <div class="input-row">
+                    <div class="field">
+                        <input type="number" id="sc-cw" value="1920" placeholder="Ancho">
+                    </div>
+                    <span>×</span>
+                    <div class="field">
+                        <input type="number" id="sc-ch" value="1080" placeholder="Alto">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label style="margin-bottom:0.5rem; display:block; display:flex; justify-content:space-between; align-items:center;">
+                    Resolución de Pantalla / Procesador
+                    <button id="sc-lock" class="preset-btn" style="padding: 2px 8px; font-size: 0.65rem; display:flex; align-items:center; gap:4px;">
+                        <span id="sc-lock-icon">🔓</span> <span id="sc-lock-text">Libre</span>
+                    </button>
+                </label>
+                <div class="input-row">
+                    <div class="field">
+                        <input type="number" id="sc-tw" value="3840" placeholder="Ancho">
+                    </div>
+                    <span>×</span>
+                    <div class="field">
+                        <input type="number" id="sc-th" value="2160" placeholder="Alto">
+                    </div>
+                    <button class="calc-btn" id="sc-calc-btn" style="padding: 0.7rem 1rem;">Calcular</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-badge" id="sc-result-area" style="margin-top:1.5rem; background: rgba(108,99,255,0.05); border: 1px solid var(--card-border); padding: 1.5rem; border-radius: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; transition: all 0.5s; position: relative; overflow: hidden;">
+            <!-- Quality Bar (Background layer) -->
+            <div id="sc-quality-bar" style="position: absolute; bottom: 0; left: 0; height: 4px; width: 0%; transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s;"></div>
+            
+            <div>
+                <div class="ic-label">Escalado</div>
+                <div class="ic-value" id="sc-type" style="color:var(--accent2); font-size:1.4rem;">—</div>
+            </div>
+            <div>
+                <div class="ic-label">Factor</div>
+                <div class="ic-value" id="sc-factor" style="font-size:1.4rem;">—</div>
+            </div>
+            <div>
+                <div class="ic-label">Ratio Coincidencia</div>
+                <div class="ic-value" id="sc-ar-match" style="font-size:1rem;">—</div>
+            </div>
+            <div>
+                <div class="ic-label">Área Útil (Fit)</div>
+                <div class="ic-value" id="sc-real-res" style="font-size:1.2rem; font-weight:700;">—</div>
+                <div class="ic-label" id="sc-bars" style="font-size:0.65rem; margin-top:2px; color:var(--muted);"></div>
+            </div>
+        </div>
+
+        <!-- ── Quality Note (NEW) ── -->
+        <div id="sc-quality-note" style="margin-top:1.25rem; padding: 1rem; border-radius: 10px; font-size: 0.85rem; display: none; align-items: flex-start; gap: 0.75rem;">
+            <span id="sc-quality-icon" style="font-size: 1.2rem;">ℹ️</span>
+            <div style="width: 100%;">
+                <strong id="sc-quality-title">Calidad de Escalado</strong>
+                <p id="sc-quality-text" style="color:var(--text); margin-top:0.25rem; line-height:1.4; opacity:0.9;"></p>
+                <div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:0.75rem;">
+                    <button id="sc-suggest-btn" class="preset-btn" style="display:none; padding: 10px 14px; font-size: 0.85rem; border-radius: 8px; cursor: pointer; color: var(--text); border: 1px solid var(--accent2); background: rgba(167, 139, 250, 0.15); transition: background 0.2s; text-align: left;">✨ Solución Anti-Aliasing</button>
+                    <button id="sc-golden-btn" class="preset-btn" style="display:none; padding: 10px 14px; font-size: 0.85rem; border-radius: 8px; cursor: pointer; color: var(--text); border: 1px solid var(--success); background: rgba(16, 185, 129, 0.15); transition: background 0.2s; text-align: left;">🌟 Forzar Golden Factor</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── Card 2: Simulación Manual por %  ─── -->
+    <div class="card">
+        <h2>Simulación: Escalado Manual por %</h2>
+        <p style="color:var(--muted);font-size:0.8rem;margin-bottom:1.25rem;">Define un porcentaje manual para ver cómo quedaría tu contenido (Media).</p>
+        
+        <div class="row3" style="max-width: 400px; margin-bottom: 1.5rem;">
+            <div class="field">
+                <label>Escalado deseado (%)</label>
+                <div class="input-row">
+                    <input type="number" id="ms-percent" value="83" step="0.1" min="1">
+                    <span style="font-size:1rem; color:var(--text);">%</span>
+                </div>
+            </div>
+            <button class="preset-btn" id="ms-sync-btn" style="padding: 0.7rem 1rem; margin-top: 1.5rem;" title="Copiar porcentaje calculado arriba">Sincronizar</button>
+        </div>
+
+        <div class="info-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div class="info-cell">
+                <div class="ic-label">Nueva Resolución Ancho</div>
+                <div class="ic-value" id="ms-res-w" style="font-size:1.5rem; color:var(--accent2);">—</div>
+            </div>
+            <div class="info-cell">
+                <div class="ic-label">Nueva Resolución Alto</div>
+                <div class="ic-value" id="ms-res-h" style="font-size:1.5rem; color:var(--accent2);">—</div>
+            </div>
+            <div class="info-cell">
+                <div class="ic-label">Total Píxeles</div>
+                <div class="ic-value" id="ms-res-px" style="font-size:1.1rem;">—</div>
+            </div>
+        </div>
+    </div>
+
+    </div> <!-- /main-pane -->
+
+    <!-- ─── PANEL SECUNDARIO (SIDEBAR) ─── -->
+    <div class="side-pane">
+
+    <!-- ─── Card 3: Resolución → Ratio ─── -->
+    <div class="card">
+        <h2>Resolución → Ratio</h2>
+
+        <div class="input-row">
+            <div class="field">
+                <label>Ancho (px)</label>
+                <input type="number" id="width" value="1920" min="1">
+            </div>
+            <span>×</span>
+            <div class="field">
+                <label>Alto (px)</label>
+                <input type="number" id="height" value="1080" min="1">
+            </div>
+        </div>
+
+        <div class="result-badge">
+            <div>
+                <div class="label">Relación de aspecto</div>
+                <div class="value" id="ratio-output">16:9</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── Card 4: Presets ─── -->
+    <div class="card">
+        <h2>Presets comunes</h2>
+        <div class="presets" id="presets">
+            <button class="preset-btn" data-w="1920"  data-h="1080" id="p-169">16:9</button>
+            <button class="preset-btn" data-w="1280"  data-h="720">HD 720p</button>
+            <button class="preset-btn" data-w="3840"  data-h="2160">4K UHD</button>
+            <button class="preset-btn" data-w="2560"  data-h="1080">21:9</button>
+            <button class="preset-btn" data-w="1024"  data-h="768">4:3</button>
+            <button class="preset-btn" data-w="800"   data-h="600">4:3 SVGA</button>
+            <button class="preset-btn" data-w="1080"  data-h="1080">1:1</button>
+            <button class="preset-btn" data-w="1080"  data-h="1920">9:16</button>
+            <button class="preset-btn" data-w="1920"  data-h="540">32:9 Strip</button>
+            <button class="preset-btn" data-w="2048"  data-h="858">2.39:1 Cine</button>
+        </div>
+    </div>
+
+    <!-- ─── Card 5: Info adicional ─── -->
+    <div class="card">
+        <h2>Información adicional</h2>
+        <div class="info-grid">
+            <div class="info-cell">
+                <div class="ic-label">Megapíxeles</div>
+                <div class="ic-value" id="info-mp">2.07 MP</div>
+            </div>
+            <div class="info-cell">
+                <div class="ic-label">Total píxeles</div>
+                <div class="ic-value" id="info-px">2,073,600</div>
+            </div>
+            <div class="info-cell">
+                <div class="ic-label">Decimal</div>
+                <div class="ic-value" id="info-dec">1.778</div>
+            </div>
+            <div class="info-cell">
+                <div class="ic-label">Diagonal (px)</div>
+                <div class="ic-value" id="info-diag">2203</div>
+            </div>
+            <div class="info-cell">
+                <div class="ic-label">Formato</div>
+                <div class="ic-value" id="info-fmt">Landscape</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── Card 6: Función inversa ─── -->
+    <div class="card">
+        <h2>Función Inversa</h2>
+        <p style="color:var(--muted);font-size:0.8rem;margin-bottom:1rem;">Dado un lado y el ratio, calcula el otro.</p>
+
+        <div class="row3">
+            <div class="field">
+                <label>Lado conocido (px)</label>
+                <input type="number" id="inv-known" placeholder="ej. 1920" min="1">
+            </div>
+            <div class="field">
+                <label>Dimensión conocida</label>
+                <select id="inv-dim">
+                    <option value="w">Ancho</option>
+                    <option value="h">Alto</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="margin-top:0.75rem;" class="row3">
+            <div class="field">
+                <label>Ratio (W:H)</label>
+                <input type="text" id="inv-ratio" placeholder="ej. 16:9">
+            </div>
+            <button class="calc-btn" id="inv-calc">Calcular</button>
+        </div>
+
+        <div class="inv-result" id="inv-result"></div>
+    </div>
+
+    <!-- ─── Card 7: Conversión px → mm ─── -->
+    <div class="card">
+        <h2>Píxeles → Milímetros</h2>
+        <p style="color:var(--muted);font-size:0.8rem;margin-bottom:1.1rem;">Convierte píxeles a distancia física según el pitch LED o DPI.</p>
+
+        <div class="row3">
+            <div class="field">
+                <label>Píxeles</label>
+                <input type="number" id="mm-px" placeholder="ej. 1920" min="1">
+            </div>
+            <div class="field">
+                <label>Modo</label>
+                <select id="mm-mode">
+                    <option value="pitch">Pitch LED (mm)</option>
+                    <option value="dpi">DPI pantalla</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="margin-top:0.75rem;" class="row3">
+            <div class="field">
+                <label id="mm-val-label">Pitch (mm)</label>
+                <input type="number" id="mm-val" placeholder="ej. 2.9" step="0.01" min="0.01">
+            </div>
+            <button class="calc-btn" id="mm-calc">Calcular</button>
+        </div>
+
+        <div class="inv-result" id="mm-result"></div>
+    </div>
+
+    </div> <!-- /side-pane -->
+
+</div>
+
+<footer>ARC v2.3 · Fluge · 2026</footer>
+
+<script>
+    // ── Utilities ──
+    function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+    function fmt(n) { return Number(n).toLocaleString('es-ES'); }
+
+    // ── Main calculator (Ratio) ──
+    const wIn  = document.getElementById('width');
+    const hIn  = document.getElementById('height');
+    const out  = document.getElementById('ratio-output');
+    const infoMp   = document.getElementById('info-mp');
+    const infoPx   = document.getElementById('info-px');
+    const infoDec  = document.getElementById('info-dec');
+    const infoDiag = document.getElementById('info-diag');
+    const infoFmt  = document.getElementById('info-fmt');
+
+    function calculate() {
+        const w = parseInt(wIn.value) || 0;
+        const h = parseInt(hIn.value) || 0;
+        if (w > 0 && h > 0) {
+            const d = gcd(w, h);
+            const dec = (w / h).toFixed(3);
+            out.innerHTML = `<span style="font-size:1.4rem;">${w/d}:${h/d}</span><br><span style="font-size:0.9rem; color:var(--muted); font-weight:400;">(${dec} : 1)</span>`;
+            
+            const total = w * h;
+            infoMp.textContent   = (total / 1e6).toFixed(2) + ' MP';
+            infoPx.textContent   = fmt(total);
+            infoDec.textContent  = (w / h).toFixed(3);
+            infoDiag.textContent = Math.round(Math.sqrt(w*w + h*h)).toLocaleString('es-ES');
+            infoFmt.textContent  = w > h ? 'Landscape' : w < h ? 'Portrait' : 'Square';
+        } else {
+            out.textContent = '—';
+        }
+    }
+
+    wIn.addEventListener('input', calculate);
+    hIn.addEventListener('input', calculate);
+    calculate();
+
+    // ── Presets ──
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            wIn.value = btn.dataset.w;
+            hIn.value = btn.dataset.h;
+            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            calculate();
+        });
+    });
+
+    // Mark active preset on input change
+    function markActivePreset() {
+        const w = wIn.value, h = hIn.value;
+        document.querySelectorAll('.preset-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.w == w && b.dataset.h == h);
+        });
+    }
+    wIn.addEventListener('input', markActivePreset);
+    hIn.addEventListener('input', markActivePreset);
+    markActivePreset();
+
+    // ── Inverse ──
+    document.getElementById('inv-calc').addEventListener('click', () => {
+        const known  = parseFloat(document.getElementById('inv-known').value);
+        const dim    = document.getElementById('inv-dim').value;
+        const ratioTxt = document.getElementById('inv-ratio').value.trim();
+        const res    = document.getElementById('inv-result');
+
+        if (!known || !ratioTxt) { res.style.color='#f87171'; res.textContent = 'Introduce todos los valores.'; return; }
+        const parts = ratioTxt.split(':').map(Number);
+        if (parts.length !== 2 || parts.some(isNaN)) { res.style.color='#f87171'; res.textContent = 'Formato de ratio inválido (usa W:H).'; return; }
+
+        const [rw, rh] = parts;
+        let result;
+        if (dim === 'w') { result = Math.round(known * rh / rw); res.textContent = `Alto: ${fmt(result)} px`; }
+        else             { result = Math.round(known * rw / rh); res.textContent = `Ancho: ${fmt(result)} px`; }
+        res.style.color = 'var(--success)';
+    });
+
+    // ── px → mm ──
+    const mmMode  = document.getElementById('mm-mode');
+    const mmLabel = document.getElementById('mm-val-label');
+    mmMode.addEventListener('change', () => {
+        mmLabel.textContent = mmMode.value === 'pitch' ? 'Pitch (mm)' : 'DPI';
+    });
+
+    document.getElementById('mm-calc').addEventListener('click', () => {
+        const px  = parseFloat(document.getElementById('mm-px').value);
+        const val = parseFloat(document.getElementById('mm-val').value);
+        const res = document.getElementById('mm-result');
+
+        if (!px || !val) { res.style.color='#f87171'; res.textContent = 'Introduce todos los valores.'; return; }
+
+        let mm;
+        if (mmMode.value === 'pitch') {
+            mm = px * val;
+        } else {
+            // DPI: 1 inch = 25.4 mm
+            mm = (px / val) * 25.4;
+        }
+        res.style.color = 'var(--success)';
+        res.textContent = `${mm.toFixed(2)} mm  (${(mm/10).toFixed(2)} cm  /  ${(mm/1000).toFixed(4)} m)`;
+    });
+
+    // ── Scaling Calculator ──
+    const scCw = document.getElementById('sc-cw');
+    const scCh = document.getElementById('sc-ch');
+    const scTw = document.getElementById('sc-tw');
+    const scTh = document.getElementById('sc-th');
+    const scLockBtn = document.getElementById('sc-lock');
+    const scLockIcon = document.getElementById('sc-lock-icon');
+    const scLockText = document.getElementById('sc-lock-text');
+
+    const scType     = document.getElementById('sc-type');
+    const scFactor   = document.getElementById('sc-factor');
+    const scArMatch  = document.getElementById('sc-ar-match');
+    const scRealRes  = document.getElementById('sc-real-res');
+    
+    // ── LED Anti-Aliasing (Integer Only) ──
+    function getIntegerScale(cw, ch, tw, th) {
+        const exact = Math.min(tw / cw, th / ch);
+        const pct   = exact * 100;
+        // Si está a menos de 0.25% de un entero, lo "traemos" al entero para evitar aliasing
+        return Math.round(pct);
+    }
+
+    const scQNote    = document.getElementById('sc-quality-note');
+    const scQIcon    = document.getElementById('sc-quality-icon');
+    const scQTitle   = document.getElementById('sc-quality-title');
+    const scQText    = document.getElementById('sc-quality-text');
+    const scQSuggest = document.getElementById('sc-suggest-btn');
+
+    let scLocked = false;
+
+    scLockBtn.addEventListener('click', () => {
+        scLocked = !scLocked;
+        scLockBtn.classList.toggle('active', scLocked);
+        scLockIcon.textContent = scLocked ? '🔒' : '🔓';
+        scLockText.textContent = scLocked ? 'Bloqueado' : 'Libre';
+        if (scLocked) syncScaling('tw'); // Sync immediately when locking
+    });
+
+    document.getElementById('sc-calc-btn').addEventListener('click', () => {
+        const tw = scTw.value;
+        const th = scTh.value;
+        if (tw && !th) syncScaling('tw', true);
+        else if (th && !tw) syncScaling('th', true);
+        else syncScaling('tw', true); 
+    });
+
+    function syncScaling(trigger, force = false) {
+        const cw = parseFloat(scCw.value) || 0;
+        const ch = parseFloat(scCh.value) || 0;
+        const tw = parseFloat(scTw.value) || 0;
+        const th = parseFloat(scTh.value) || 0;
+
+        if (!cw || !ch) return; // Need content to calculate
+
+        if (scLocked || force) {
+            if (trigger === 'tw' && tw) {
+                scTh.value = Math.round(tw * ch / cw);
+            } else if (trigger === 'th' && th) {
+                scTw.value = Math.round(th * cw / ch);
+            } else if ((trigger === 'cw' || trigger === 'ch') && tw) {
+                scTh.value = Math.round(tw * ch / cw);
+            }
+        }
+        calcScaling();
+    }
+
+    function calcScaling() {
+        const cw = parseFloat(scCw.value) || 0;
+        const ch = parseFloat(scCh.value) || 0;
+        const tw = parseFloat(scTw.value) || 0;
+        const th = parseFloat(scTh.value) || 0;
+        const barsLabel = document.getElementById('sc-bars');
+        const resArea = document.getElementById('sc-result-area');
+
+        if (!cw || !ch || !tw || !th) {
+            scFactor.textContent = '—';
+            scType.textContent = '—';
+            scArMatch.textContent = 'Pendiente...';
+            scRealRes.textContent = '—';
+            barsLabel.textContent = '';
+            resArea.style.borderColor = 'var(--card-border)';
+            resArea.style.boxShadow = 'none';
+            return;
+        }
+
+        // Highlight update
+        resArea.style.borderColor = 'var(--accent)';
+        resArea.style.boxShadow = '0 0 15px rgba(108,99,255,0.2)';
+        setTimeout(() => {
+            resArea.style.borderColor = 'var(--card-border)';
+            resArea.style.boxShadow = 'none';
+        }, 800);
+
+        const factorW = tw / cw;
+        const factorH = th / ch;
+        
+        const scale = Math.min(factorW, factorH);
+        const exactPercent = scale * 100;
+        const ledPercent   = Math.round(exactPercent);
+
+        scFactor.textContent = ledPercent + '%';
+
+        if (scale > 1.001) { scType.textContent = 'Upscale'; scType.style.color = 'var(--accent2)'; }
+        else if (scale < 0.999) { scType.textContent = 'Downscale'; scType.style.color = '#f59e0b'; }
+        else { scType.textContent = 'Nativo'; scType.style.color = 'var(--success)'; }
+
+        const arC = cw / ch;
+        const arT = tw / th;
+
+        if (Math.abs(arC - arT) < 0.01) {
+            const d = gcd(cw, ch); scArMatch.textContent = `PERFECTO (${cw/d}:${ch/d})`; scArMatch.style.color = 'var(--success)'; barsLabel.textContent = 'Cubre 100% de pantalla';
+        } else {
+            scArMatch.textContent = 'DIFERENTE'; scArMatch.style.color = '#f87171';
+            if (arC > arT) { barsLabel.textContent = `Letterbox: ${Math.round((th - ch*(ledPercent/100))/2)}px arriba/abajo`; }
+            else { barsLabel.textContent = `Pillarbox: ${Math.round((tw - cw*(ledPercent/100))/2)}px dcha/izq`; }
+        }
+
+        const realW = Math.round(cw * (ledPercent / 100));
+        const realH = Math.round(ch * (ledPercent / 100));
+        scRealRes.textContent = `${fmt(realW)} × ${fmt(realH)}`;
+
+        // ── LED Quality Diagnosis ──
+        updateQualityDiagnosis(exactPercent);
+
+        // Auto-update manual scaling card for consistency
+        msPercent.value = ledPercent;
+        calcManualScaling();
+    }
+
+    let currentSuggestion = null;
+
+    function updateQualityDiagnosis(pct) {
+        scQNote.style.display = 'flex';
+        scQSuggest.style.display = 'none';
+        const scGoldenBtn = document.getElementById('sc-golden-btn');
+        if (scGoldenBtn) scGoldenBtn.style.display = 'none';
+        
+        const qBar = document.getElementById('sc-quality-bar');
+        currentSuggestion = null;
+        
+        // Golden Factors (ideal for digital sampling)
+        const goldenFactors = [25, 50, 75, 100, 150, 200, 300, 400];
+        const isGolden = goldenFactors.includes(pct);
+        const cw = parseFloat(scCw.value);
+        const ch = parseFloat(scCh.value);
+        const tw = parseFloat(scTw.value);
+        const th = parseFloat(scTh.value);
+
+        if (!isGolden) {
+            if (scGoldenBtn) {
+                let nearestGolden = 100;
+                let minDiff = Infinity;
+                for (let g of goldenFactors) {
+                    if (Math.abs(g - pct) < minDiff) { minDiff = Math.abs(g - pct); nearestGolden = g; }
+                }
+                scGoldenBtn.style.display = 'block';
+                let gTw = Math.round(cw * (nearestGolden / 100));
+                let gTh = Math.round(ch * (nearestGolden / 100));
+                scGoldenBtn.innerHTML = `<strong style="color:var(--success);">🌟 Golden Factor Cercano (${nearestGolden}%)</strong><br>
+                                         <span style="font-size:0.75rem; opacity:0.9;">Ajusta LED ROI a: <strong>${gTw}x${gTh}</strong> (Nativo: 1:1 en Procesador)</span>`;
+                scGoldenBtn.onclick = () => {
+                    scTw.value = gTw;
+                    scTh.value = gTh;
+                    calcScaling();
+                };
+            }
+        }
+
+        if (pct === 100) {
+            scQNote.style.background = 'rgba(74, 222, 128, 0.1)';
+            scQIcon.textContent = '✅';
+            scQTitle.textContent = 'Mapeo Perfecto (1:1)';
+            scQText.textContent = 'Píxel-a-Píxel nativo. Sin escalado, sin aliasing. Máxima calidad LED.';
+            qBar.style.width = '100%';
+            qBar.style.backgroundColor = 'var(--success)';
+        } else if (isGolden) {
+            scQNote.style.background = 'rgba(74, 222, 128, 0.1)';
+            scQIcon.textContent = '💎';
+            scQTitle.textContent = 'Factor Golden (Ideal)';
+            scQText.textContent = `El factor ${pct}% es matemáticamente limpio para el procesado. Produce resultados nítidos sin aliasing complejo.`;
+            qBar.style.width = '90%';
+            qBar.style.backgroundColor = 'var(--success)';
+        } else if (pct % 1 === 0) {
+            // Factor entero (Anti-aliasing)
+            scQNote.style.background = 'rgba(167, 139, 250, 0.1)';
+            scQIcon.textContent = '⚖️';
+            scQTitle.textContent = 'Factor Entero (Anti-Aliasing)';
+            scQText.textContent = `Al usar exactamente un ${pct}%, evitas el aliasing de los decimales, manteniendo la simetría de los píxeles.`;
+            qBar.style.width = '70%';
+            qBar.style.backgroundColor = 'var(--accent2)';
+        } else {
+            // Factor con decimales (Aliasing probable)
+            scQNote.style.background = 'rgba(245, 158, 11, 0.1)';
+            scQIcon.textContent = '⚠️';
+            scQTitle.textContent = 'Riesgo de Aliasing';
+            scQText.innerHTML = `Escalado de <strong>${pct.toFixed(3)}%</strong>. Al no ser un entero exacto matemático, el procesador LED creará interpolación de sub-píxeles, lo que resulta en pérdida de nitidez o parpadeo.<br><br>Para un Anti-Aliasing perfecto, el contenido y la pantalla deben encajar en una fracción matemática exacta.`;
+            qBar.style.width = '40%';
+            qBar.style.backgroundColor = '#f59e0b';
+
+            // Find perfect integer math constraints
+            let suggestPct = Math.round(pct);
+            if (suggestPct > 0) {
+                const d = gcd(suggestPct, 100);
+                const fractionDen = 100 / d; // Requires canvas width/height to be multiples of this
+                
+                let newCw = Math.round(cw / fractionDen) * fractionDen;
+                let newCh = Math.round(ch / fractionDen) * fractionDen;
+                if (newCw === 0) newCw = fractionDen;
+                if (newCh === 0) newCh = fractionDen;
+
+                let newTw = newCw * (suggestPct / 100);
+                let newTh = newCh * (suggestPct / 100);
+
+                currentSuggestion = { cw: newCw, ch: newCh, tw: newTw, th: newTh };
+                scQSuggest.style.display = 'block';
+                scQSuggest.innerHTML = `<strong style="color:var(--accent2);">✨ Solución Anti-Aliasing al ${suggestPct}%</strong><br>
+                                        <span style="font-size:0.75rem; opacity:0.9;">Ajusta Comp origen a: <strong>${newCw}x${newCh}</strong> → LED: <strong>${newTw}x${newTh}</strong></span>`;
+            }
+        }
+
+        // Extra info for professionals
+        if (pct != 100) {
+            scQText.innerHTML += `<br><br><span style="color:var(--muted); font-size: 0.75rem;"><strong>Bypass (Modo Alternativo):</strong> Si quieres evitar escalar por completo, configura el procesador en <strong>"1:1"</strong> y define un área de <strong>${scTw.value}x${scTh.value}</strong> en la fuente.</span>`;
+        }
+    }
+
+    scQSuggest.addEventListener('click', () => {
+        if (currentSuggestion) {
+            if (currentSuggestion.cw) scCw.value = currentSuggestion.cw;
+            if (currentSuggestion.ch) scCh.value = currentSuggestion.ch;
+            if (currentSuggestion.tw) scTw.value = currentSuggestion.tw;
+            if (currentSuggestion.th) scTh.value = currentSuggestion.th;
+            calcScaling();
+        }
+    });
+
+    // ── Manual Scaling Calculator ──
+    const msPercent = document.getElementById('ms-percent');
+    const msResW    = document.getElementById('ms-res-w');
+    const msResH    = document.getElementById('ms-res-h');
+    const msResPx   = document.getElementById('ms-res-px');
+    const msSyncBtn = document.getElementById('ms-sync-btn');
+
+    function calcManualScaling() {
+        const cw = parseFloat(scCw.value) || 0;
+        const ch = parseFloat(scCh.value) || 0;
+        const pct = parseFloat(msPercent.value) || 0;
+
+        if (!cw || !ch || !pct) {
+            msResW.textContent = '—';
+            msResH.textContent = '—';
+            msResPx.textContent = '—';
+            return;
+        }
+
+        const rw = Math.round(cw * (pct / 100));
+        const rh = Math.round(ch * (pct / 100));
+
+        msResW.textContent = fmt(rw) + ' px';
+        msResH.textContent = fmt(rh) + ' px';
+        msResPx.textContent = fmt(rw * rh);
+    }
+
+    msPercent.addEventListener('input', calcManualScaling);
+    msSyncBtn.addEventListener('click', () => {
+        const cw = parseFloat(scCw.value) || 0;
+        const ch = parseFloat(scCh.value) || 0;
+        const tw = parseFloat(scTw.value) || 0;
+        const th = parseFloat(scTh.value) || 0;
+        if (!cw || !ch || !tw || !th) return;
+        
+        const scale = Math.min(tw/cw, th/ch);
+        msPercent.value = Math.floor(scale * 100);
+        calcManualScaling();
+    });
+
+    scCw.addEventListener('input', () => { syncScaling('cw'); calcManualScaling(); });
+    scCh.addEventListener('input', () => { syncScaling('ch'); calcManualScaling(); });
+    scTw.addEventListener('input', () => syncScaling('tw'));
+    scTh.addEventListener('input', () => syncScaling('th'));
+    
+    calcScaling();
+    calcManualScaling();
+</script>
+</body>
+</html>
