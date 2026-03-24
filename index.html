@@ -152,6 +152,7 @@
             outline: none;
             transition: all 0.2s ease;
             -moz-appearance: textfield;
+            appearance: textfield;
         }
 
         input[type="number"]::-webkit-inner-spin-button { display: none; }
@@ -221,6 +222,11 @@
             color: var(--text);
             box-shadow: 0 4px 12px rgba(167,139,250,0.15);
         }
+
+        /* ── RB Buttons ── */
+        .rb-btn { flex: 1; border: none; background: transparent; color: var(--muted); padding: 0.5rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; font-family: 'Inter', sans-serif;}
+        .rb-btn:hover { background: rgba(255,255,255,0.05); }
+        .rb-btn.active { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(109, 40, 217, 0.4); }
 
         /* ── Info grid ── */
         .info-grid {
@@ -404,6 +410,100 @@
         </div>
     </div>
 
+    <!-- ─── Card 8: Calculadora EDID / CVT (EM Calc) ─── -->
+    <div class="card" style="margin-top: 1.5rem;">
+        <h2>Tiempos EDID</h2>
+        <p style="color:var(--muted);font-size:0.8rem;margin-bottom:1.5rem;">Genera los tiempos exactos de píxeles y blanking recomendados (VESA CVT-RBv2) para pantallas LED y EDIDs personalizados.</p>
+
+        <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div class="field">
+                <label>H Active (Píxeles)</label>
+                <input type="number" id="cvt-h" value="2560" min="1">
+            </div>
+            <div class="field">
+                <label>V Active (Líneas)</label>
+                <input type="number" id="cvt-v" value="2000" min="1">
+            </div>
+            <div class="field">
+                <label>Refresco (Hz)</label>
+                <input type="number" id="cvt-hz" value="60" min="1" step="0.01">
+            </div>
+            <div class="field">
+                <label>Reduced Blanking</label>
+                <div style="display:flex; gap:0.25rem; background: rgba(0,0,0,0.4); border: 1px solid var(--input-border); border-radius: 8px; padding: 0.25rem;">
+                    <button class="rb-btn" data-rb="off">OFF</button>
+                    <button class="rb-btn" data-rb="v1">V1</button>
+                    <button class="rb-btn active" data-rb="v2">V2</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 2rem;">
+            <div class="info-cell" style="text-align: center; border-color: rgba(167, 139, 250, 0.3); background: rgba(167, 139, 250, 0.05);">
+                <div class="ic-label">Pixel Clock (MHz)</div>
+                <div class="ic-value" id="cvt-pclk" style="font-size:1.8rem; color:var(--text);">325.829</div>
+            </div>
+            <div class="info-cell" style="text-align: center;">
+                <div class="ic-label">Capacidad Ancho de Banda</div>
+                <div class="ic-value" id="cvt-bw" style="font-size:1.15rem; color:var(--accent2); margin-top: 0.6rem;">DL-DVI</div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2.5rem;">
+            <!-- Horizontal -->
+            <div>
+                <h3 style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; border-bottom: 1px solid var(--input-border); padding-bottom: 0.5rem;">Horizontal Timing</h3>
+                
+                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
+                    <span style="font-size:0.85rem; color:var(--muted);">H Total</span>
+                    <span id="cvt-ht" style="font-size:0.95rem; font-weight:600;">2640</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
+                    <span style="font-size:0.85rem; color:var(--muted);">H Front Porch</span>
+                    <span id="cvt-hfp" style="font-size:0.95rem; font-weight:600;">8</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
+                    <span style="font-size:0.85rem; color:var(--text);">H Active</span>
+                    <span id="cvt-ha" style="font-size:0.95rem; font-weight:600; color:var(--text);">2560</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
+                    <span style="font-size:0.85rem; color:var(--muted);">H Sync</span>
+                    <span id="cvt-hs" style="font-size:0.95rem; font-weight:600;">32</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0;">
+                    <span style="font-size:0.85rem; color:var(--muted);">H Polarity</span>
+                    <span id="cvt-hpol" style="font-size:0.95rem; font-weight:600; color:var(--success);">+</span>
+                </div>
+            </div>
+
+            <!-- Vertical -->
+            <div>
+                <h3 style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; border-bottom: 1px solid var(--input-border); padding-bottom: 0.5rem;">Vertical Timing</h3>
+                
+                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
+                    <span style="font-size:0.85rem; color:var(--muted);">V Total</span>
+                    <span id="cvt-vt" style="font-size:0.95rem; font-weight:600;">2057</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
+                    <span style="font-size:0.85rem; color:var(--muted);">V Front Porch</span>
+                    <span id="cvt-vfp" style="font-size:0.95rem; font-weight:600;">43</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
+                    <span style="font-size:0.85rem; color:var(--text);">V Active</span>
+                    <span id="cvt-va" style="font-size:0.95rem; font-weight:600; color:var(--text);">2000</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
+                    <span style="font-size:0.85rem; color:var(--muted);">V Sync</span>
+                    <span id="cvt-vs" style="font-size:0.95rem; font-weight:600;">8</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0;">
+                    <span style="font-size:0.85rem; color:var(--muted);">V Polarity</span>
+                    <span id="cvt-vpol" style="font-size:0.95rem; font-weight:600; color:#f87171;">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     </div> <!-- /main-pane -->
 
     <!-- ─── PANEL SECUNDARIO (SIDEBAR) ─── -->
@@ -433,20 +533,75 @@
         </div>
     </div>
 
-    <!-- ─── Card 4: Presets ─── -->
+    <!-- ─── Card 4: Ubicación en Canvas Estándar ─── -->
     <div class="card">
-        <h2>Presets comunes</h2>
-        <div class="presets" id="presets">
-            <button class="preset-btn" data-w="1920"  data-h="1080" id="p-169">16:9</button>
-            <button class="preset-btn" data-w="1280"  data-h="720">HD 720p</button>
-            <button class="preset-btn" data-w="3840"  data-h="2160">4K UHD</button>
-            <button class="preset-btn" data-w="2560"  data-h="1080">21:9</button>
-            <button class="preset-btn" data-w="1024"  data-h="768">4:3</button>
-            <button class="preset-btn" data-w="800"   data-h="600">4:3 SVGA</button>
-            <button class="preset-btn" data-w="1080"  data-h="1080">1:1</button>
-            <button class="preset-btn" data-w="1080"  data-h="1920">9:16</button>
-            <button class="preset-btn" data-w="1920"  data-h="540">32:9 Strip</button>
-            <button class="preset-btn" data-w="2048"  data-h="858">2.39:1 Cine</button>
+        <h2>Canvas Estándar</h2>
+        <p style="color:var(--muted);font-size:0.8rem;margin-bottom:1rem;">Calcula las coordenadas X, Y para encajar tu ventana en una resolución estándar orientada hacia arriba.</p>
+        
+        <div class="row3" style="margin-bottom: 1rem;">
+            <div class="field">
+                <label>Canvas Estándar</label>
+                <select id="canvas-std" style="padding: 0.6rem; font-size: 0.9rem;">
+                    <option value="auto">Automático (Mínimo que quepa)</option>
+                    <option value="1280x720">HD 720p (1280×720)</option>
+                    <option value="1920x1080">FHD 1080p (1920×1080)</option>
+                    <option value="2560x1440">QHD 1440p (2560×1440)</option>
+                    <option value="3840x2160">4K UHD (3840×2160)</option>
+                    <option value="4096x2160">DCI 4K (4096×2160)</option>
+                    <option value="7680x4320">8K UHD (7680×4320)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row3" style="margin-bottom: 1.25rem;">
+            <div class="field">
+                <label>Alineación Horiz.</label>
+                <select id="canvas-align-h" style="padding: 0.6rem; font-size: 0.9rem;">
+                    <option value="center">Centro</option>
+                    <option value="left">Izquierda</option>
+                    <option value="right">Derecha</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Alineación Vert.</label>
+                <select id="canvas-align-v" style="padding: 0.6rem; font-size: 0.9rem;">
+                    <option value="center">Centro</option>
+                    <option value="top">Arriba</option>
+                    <option value="bottom">Abajo</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="info-grid" style="grid-template-columns: repeat(2, 1fr);">
+            <div class="info-cell">
+                <div class="ic-label">Posición X (Left)</div>
+                <div class="ic-value" id="canvas-pos-x" style="font-size:1.4rem; color:var(--text); letter-spacing:-0.5px;">—</div>
+            </div>
+            <div class="info-cell">
+                <div class="ic-label">Posición Y (Top)</div>
+                <div class="ic-value" id="canvas-pos-y" style="font-size:1.4rem; color:var(--text); letter-spacing:-0.5px;">—</div>
+            </div>
+        </div>
+
+        <!-- Previsualización -->
+        <div id="canvas-preview-section" style="width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 1.5rem; margin-bottom: 0.5rem;">
+            <div style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Previsualización Visual</div>
+            <div id="canvas-preview-wrapper" style="position: relative; width: 100%; max-width: 280px; border: 1px solid rgba(255,255,255,0.4); background: rgba(0,0,0,0.5); box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: aspect-ratio 0.3s ease;">
+                <!-- Label for Canvas -->
+                <div style="position: absolute; bottom: -20px; right: 0; font-size: 0.6rem; color: var(--muted); text-transform: uppercase;">Lienzo Estándar</div>
+                
+                <div id="canvas-preview-window" style="position: absolute; border: 1px solid var(--success); background: rgba(16, 185, 129, 0.25); box-shadow: 0 0 15px rgba(16, 185, 129, 0.6); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; overflow: hidden;">
+                    <span id="canvas-preview-text" style="font-size: 0.65rem; font-weight: 600; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.8); text-align: center; line-height: 1.1;"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-badge" style="margin-top:1.5rem; padding: 1.25rem;">
+            <div style="flex:1;">
+                <div class="label" id="canvas-res-label">Resolución Final Canvas</div>
+                <div class="value" id="canvas-res-out" style="font-size: 1.3rem; color: var(--accent2);">—</div>
+            </div>
+            <button class="preset-btn" id="canvas-apply" style="padding: 0.6rem 1rem; display:none; background: rgba(109, 40, 217, 0.2); border-color: var(--accent);">Ir al Escalador</button>
         </div>
     </div>
 
@@ -541,7 +696,7 @@
 
 </div>
 
-<footer>ARC v2.3 · Fluge · 2026</footer>
+<footer>ARC v2.3 · Developed by Alfonso Castaño · 2026</footer>
 
 <script>
     // ── Utilities ──
@@ -572,36 +727,140 @@
             infoDec.textContent  = (w / h).toFixed(3);
             infoDiag.textContent = Math.round(Math.sqrt(w*w + h*h)).toLocaleString('es-ES');
             infoFmt.textContent  = w > h ? 'Landscape' : w < h ? 'Portrait' : 'Square';
+            
+            if (typeof updateCanvasFit === 'function') updateCanvasFit(w, h);
         } else {
             out.textContent = '—';
+            if (typeof updateCanvasFit === 'function') updateCanvasFit(0, 0);
         }
     }
 
+    // ── Canvas Estándar ──
+    const canvasPosX = document.getElementById('canvas-pos-x');
+    const canvasPosY = document.getElementById('canvas-pos-y');
+    const canvasResOut = document.getElementById('canvas-res-out');
+    const canvasApply = document.getElementById('canvas-apply');
+    const canvasStdSelector = document.getElementById('canvas-std');
+    const canvasAlignH = document.getElementById('canvas-align-h');
+    const canvasAlignV = document.getElementById('canvas-align-v');
+
+    function updateCanvasFit(w, h) {
+        if (w <= 0 || h <= 0) {
+            canvasPosX.textContent = '—';
+            canvasPosY.textContent = '—';
+            canvasResOut.textContent = '—';
+            canvasApply.style.display = 'none';
+            const cpSec = document.getElementById('canvas-preview-section');
+            if (cpSec) cpSec.style.display = 'none';
+            return;
+        }
+
+        const stdRes = [
+            { w: 1280, h: 720, name: 'HD 720p' },
+            { w: 1920, h: 1080, name: 'FHD 1080p' },
+            { w: 2560, h: 1440, name: 'QHD 1440p' },
+            { w: 3840, h: 2160, name: '4K UHD' },
+            { w: 4096, h: 2160, name: 'DCI 4K' },
+            { w: 7680, h: 4320, name: '8K UHD' }
+        ];
+
+        let selectedW = 0, selectedH = 0, selectedName = '';
+        const stdVal = canvasStdSelector.value;
+
+        if (stdVal === 'auto') {
+            // Find smallest standard that fits W and H
+            let found = null;
+            for (let res of stdRes) {
+                if (res.w >= w && res.h >= h) {
+                    found = res;
+                    break;
+                }
+            }
+            if (found) {
+                selectedW = found.w;
+                selectedH = found.h;
+                selectedName = found.name;
+            } else {
+                selectedW = w;
+                selectedH = h;
+                selectedName = 'A Medida (Excede 8K)';
+            }
+        } else {
+            const parts = stdVal.split('x');
+            selectedW = parseInt(parts[0]);
+            selectedH = parseInt(parts[1]);
+            const match = stdRes.find(r => r.w === selectedW && r.h === selectedH);
+            selectedName = match ? match.name : stdVal;
+        }
+
+        canvasResOut.innerHTML = `${fmt(selectedW)} × ${fmt(selectedH)} <span style="font-size:0.75rem; color:var(--muted); font-weight:normal; margin-left: 0.5rem; background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px;">${selectedName}</span>`;
+
+        let posX = 0, posY = 0;
+        let diffW = selectedW - w;
+        let diffH = selectedH - h;
+
+        // X alignment
+        if (canvasAlignH.value === 'left') posX = 0;
+        else if (canvasAlignH.value === 'center') posX = Math.round(diffW / 2);
+        else if (canvasAlignH.value === 'right') posX = diffW;
+
+        // Y alignment
+        if (canvasAlignV.value === 'top') posY = 0;
+        else if (canvasAlignV.value === 'center') posY = Math.round(diffH / 2);
+        else if (canvasAlignV.value === 'bottom') posY = diffH;
+
+        if (posX < 0) { canvasPosX.innerHTML = `<span style="color:#f87171;">${posX}</span> (Recorte)`; }
+        else { canvasPosX.textContent = posX; }
+
+        if (posY < 0) { canvasPosY.innerHTML = `<span style="color:#f87171;">${posY}</span> (Recorte)`; }
+        else { canvasPosY.textContent = posY; }
+
+        canvasApply.style.display = 'block';
+        canvasApply.dataset.cw = w;
+        canvasApply.dataset.ch = h;
+        canvasApply.dataset.tw = selectedW;
+        canvasApply.dataset.th = selectedH;
+
+        // Visual preview
+        const cpSec = document.getElementById('canvas-preview-section');
+        const wrapper = document.getElementById('canvas-preview-wrapper');
+        const winElem = document.getElementById('canvas-preview-window');
+        if (cpSec && wrapper && winElem) {
+            cpSec.style.display = 'flex';
+            wrapper.style.aspectRatio = `${selectedW} / ${selectedH}`;
+            winElem.style.width = `${(w / selectedW) * 100}%`;
+            winElem.style.height = `${(h / selectedH) * 100}%`;
+            winElem.style.left = `${(posX / selectedW) * 100}%`;
+            winElem.style.top = `${(posY / selectedH) * 100}%`;
+            document.getElementById('canvas-preview-text').innerHTML = `${w} <span style="font-weight:400; font-size:0.5rem; color:rgba(255,255,255,0.7);">x</span> ${h}`;
+        }
+    }
+
+    canvasStdSelector.addEventListener('change', () => calculate());
+    canvasAlignH.addEventListener('change', () => calculate());
+    canvasAlignV.addEventListener('change', () => calculate());
+
     wIn.addEventListener('input', calculate);
     hIn.addEventListener('input', calculate);
-    calculate();
 
-    // ── Presets ──
-    document.querySelectorAll('.preset-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            wIn.value = btn.dataset.w;
-            hIn.value = btn.dataset.h;
-            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            calculate();
-        });
+    canvasApply.addEventListener('click', (e) => {
+        const btn = e.target;
+        const scCw = document.getElementById('sc-cw');
+        const scCh = document.getElementById('sc-ch');
+        const scTw = document.getElementById('sc-tw');
+        const scTh = document.getElementById('sc-th');
+        if (scCw && scCh && scTw && scTh) {
+            scCw.value = btn.dataset.cw;
+            scCh.value = btn.dataset.ch;
+            scTw.value = btn.dataset.tw;
+            scTh.value = btn.dataset.th;
+            document.getElementById('sc-calc-btn').click();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     });
 
-    // Mark active preset on input change
-    function markActivePreset() {
-        const w = wIn.value, h = hIn.value;
-        document.querySelectorAll('.preset-btn').forEach(b => {
-            b.classList.toggle('active', b.dataset.w == w && b.dataset.h == h);
-        });
-    }
-    wIn.addEventListener('input', markActivePreset);
-    hIn.addEventListener('input', markActivePreset);
-    markActivePreset();
+    // Run after initialization
+    calculate();
 
     // ── Inverse ──
     document.getElementById('inv-calc').addEventListener('click', () => {
@@ -924,11 +1183,126 @@
 
     scCw.addEventListener('input', () => { syncScaling('cw'); calcManualScaling(); });
     scCh.addEventListener('input', () => { syncScaling('ch'); calcManualScaling(); });
-    scTw.addEventListener('input', () => syncScaling('tw'));
-    scTh.addEventListener('input', () => syncScaling('th'));
+    scTw.addEventListener('input', () => { syncScaling('tw'); syncCVTFromProcessor(); });
+    scTh.addEventListener('input', () => { syncScaling('th'); syncCVTFromProcessor(); });
     
+    // ── CVT-RBv2 / EDID Calculator (EM Calc) ──
+    const cvtH = document.getElementById('cvt-h');
+    const cvtV = document.getElementById('cvt-v');
+    const cvtHz = document.getElementById('cvt-hz');
+    let currentRB = 'v2';
+
+    document.querySelectorAll('.rb-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.rb-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            currentRB = e.target.dataset.rb;
+            calculateCVT();
+        });
+    });
+
+    function calculateCVT() {
+        if (!cvtH || !cvtV || !cvtHz) return;
+        const hActive = parseInt(cvtH.value) || 0;
+        const vActive = parseInt(cvtV.value) || 0;
+        const vRate = parseFloat(cvtHz.value) || 0;
+
+        if (hActive <= 0 || vActive <= 0 || vRate <= 0) return;
+
+        let hSync, hFrontPorch, hBackPorch, hBlank;
+        let vSync, vBackPorch, vFrontPorch, minVBlankUs;
+        let hPol, vPol;
+
+        if (currentRB === 'v2') {
+            hSync = 32; hFrontPorch = 8; hBackPorch = 40; hBlank = 80;
+            vSync = 8; vBackPorch = 6; minVBlankUs = 460;
+            hPol = '+'; vPol = '-';
+        } else if (currentRB === 'v1') {
+            hSync = 32; hFrontPorch = 48; hBackPorch = 80; hBlank = 160;
+            vSync = 5; vFrontPorch = 3; minVBlankUs = 460;
+            hPol = '+'; vPol = '-';
+        } else {
+            // CVT Standard (OFF)
+            hBlank = Math.round(hActive * 0.33 / 8) * 8; // approx 25-33% blanking
+            hSync = Math.round(hBlank * 0.2); 
+            hFrontPorch = Math.round(hBlank * 0.15);
+            hBackPorch = hBlank - hSync - hFrontPorch;
+            minVBlankUs = 550;
+            vSync = 5; vFrontPorch = 3;
+            hPol = '-'; vPol = '+';
+        }
+
+        const hTotal = hActive + hBlank;
+        
+        let vTotal = Math.ceil(vActive / (1 - (vRate * (minVBlankUs / 1000000))));
+        let vBlank = vTotal - vActive;
+
+        if (currentRB === 'v2') {
+            vFrontPorch = vBlank - vSync - vBackPorch;
+            if (vFrontPorch < 1) {
+                vFrontPorch = 1;
+                vBlank = vSync + vBackPorch + vFrontPorch;
+                vTotal = vActive + vBlank;
+            }
+        } else {
+            vBackPorch = vBlank - vSync - vFrontPorch;
+            if (vBackPorch < 1) {
+                vBackPorch = 1;
+                vBlank = vSync + vBackPorch + vFrontPorch;
+                vTotal = vActive + vBlank;
+            }
+        }
+
+        const pixelClockHz = hTotal * vTotal * vRate;
+        const pclkMhz = pixelClockHz / 1000000;
+
+        let bw = 'Unknown';
+        if (pclkMhz <= 165) bw = 'SL-DVI (Single Link)';
+        else if (pclkMhz <= 340) bw = 'DL-DVI / HDMI 1.4';
+        else if (pclkMhz <= 600) bw = 'HDMI 2.0 / DP 1.2';
+        else if (pclkMhz <= 1200) bw = 'HDMI 2.1 / DP 1.4';
+        else bw = 'Excede HDMI 2.1 / DP 1.4';
+
+        document.getElementById('cvt-pclk').textContent = pclkMhz.toFixed(3);
+        document.getElementById('cvt-bw').textContent = bw;
+        
+        document.getElementById('cvt-ht').textContent = hTotal;
+        document.getElementById('cvt-hfp').textContent = hFrontPorch;
+        document.getElementById('cvt-ha').textContent = hActive;
+        document.getElementById('cvt-hs').textContent = hSync;
+
+        document.getElementById('cvt-vt').textContent = vTotal;
+        document.getElementById('cvt-vfp').textContent = vFrontPorch;
+        document.getElementById('cvt-va').textContent = vActive;
+        document.getElementById('cvt-vs').textContent = vSync;
+
+        const hPolEl = document.getElementById('cvt-hpol');
+        hPolEl.textContent = hPol;
+        hPolEl.style.color = hPol === '+' ? 'var(--success)' : '#f87171';
+
+        const vPolEl = document.getElementById('cvt-vpol');
+        vPolEl.textContent = vPol;
+        vPolEl.style.color = vPol === '+' ? 'var(--success)' : '#f87171';
+    }
+
+    if(cvtH) cvtH.addEventListener('input', calculateCVT);
+    if(cvtV) cvtV.addEventListener('input', calculateCVT);
+    if(cvtHz) cvtHz.addEventListener('input', calculateCVT);
+
+    function syncCVTFromProcessor() {
+        if (!cvtH || !cvtV || !scTw || !scTh) return;
+        const tw = parseInt(scTw.value);
+        const th = parseInt(scTh.value);
+        if (tw > 0 && th > 0) {
+            cvtH.value = tw;
+            cvtV.value = th;
+            calculateCVT();
+        }
+    }
+
     calcScaling();
     calcManualScaling();
+    calculateCVT();
 </script>
 </body>
 </html>
