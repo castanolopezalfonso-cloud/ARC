@@ -37,10 +37,12 @@
             color: var(--text);
             padding: 1.5rem 1rem 6rem 1rem;
             width: 100%;
+            overflow-x: hidden;
         }
 
         header, .dashboard-container {
-            max-width: 1300px;
+            max-width: 1600px;
+            width: 95%;
             margin: 0 auto;
         }
 
@@ -50,7 +52,7 @@
         }
 
         header h1 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 800;
             letter-spacing: -0.04em;
             background: linear-gradient(135deg, #fff 10%, var(--accent2));
@@ -61,45 +63,51 @@
 
         header p {
             color: var(--muted);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             margin-top: 0.5rem;
             font-weight: 400;
         }
 
         .dashboard-container {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) 380px;
+            display: flex;
+            flex-wrap: wrap;
             gap: 1.5rem;
             width: 100%;
-            max-width: 1300px;
+            align-items: flex-start;
         }
 
-        .main-pane, .side-pane {
+        .main-pane {
+            flex: 1;
+            min-width: min(100%, 750px);
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
         }
 
-        @media (max-width: 1100px) {
-            .dashboard-container {
-                grid-template-columns: 1fr;
+        .side-pane {
+            width: 380px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1200px) {
+            .side-pane {
+                width: 100%;
+            }
+            .main-pane {
+                min-width: 100%;
             }
         }
-
-        @media (max-width: 1000px) {
-            .dashboard-container { grid-template-columns: 1fr; }
-        }
-
-        .main-pane { display: flex; flex-direction: column; gap: 1.5rem; }
-        .side-pane { display: flex; flex-direction: column; gap: 1.5rem; }
 
         .card {
             background: #111827;
             border: 1px solid rgba(148, 163, 184, 0.25);
-            border-radius: 16px;
-            padding: 1.4rem;
+            border-radius: 20px;
+            padding: 1.5rem;
             transition: all 0.25s ease;
-            box-shadow: 0 10px 20px -10px rgba(15, 23, 42, 0.6);
+            box-shadow: 0 10px 25px -10px rgba(15, 23, 42, 0.6);
         }
 
         .card:hover { border-color: rgba(148, 163, 184, 0.45); box-shadow: 0 14px 28px -12px rgba(15, 23, 42, 0.7); }
