@@ -7,8 +7,8 @@ st.markdown("""
 <style>
 /* Remove Streamlit default paddings */
 .block-container {
-    padding-top: 0rem;
-    padding-bottom: 0rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
     max-width: 100%;
 }
 </style>
@@ -19,7 +19,7 @@ try:
         html_data = f.read()
     
     # Render the HTML/JS dashboard
-    components.html(html_data, height=1300, scrolling=True)
+    components.html(html_data, height=3000, width=1600, scrolling=True)
     
 except FileNotFoundError:
     st.error("Error: index.html not found. Make sure the file exists in the same directory as app.py.")
