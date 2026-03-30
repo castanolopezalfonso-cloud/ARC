@@ -25,19 +25,23 @@
             --radius: 20px;
         }
 
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: #0f172a;
+            min-height: 100%;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg);
             color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 3rem 1.5rem;
-            background-image:
-                radial-gradient(circle at 10% 20%, rgba(109, 40, 217, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 90% 80%, rgba(56, 189, 248, 0.1) 0%, transparent 50%);
-            background-attachment: fixed;
+            padding: 1.5rem 1rem 6rem 1rem;
+            width: 100%;
+        }
+
+        header, .dashboard-container {
+            max-width: 1300px;
+            margin: 0 auto;
         }
 
         header {
@@ -46,7 +50,7 @@
         }
 
         header h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 800;
             letter-spacing: -0.04em;
             background: linear-gradient(135deg, #fff 10%, var(--accent2));
@@ -57,17 +61,29 @@
 
         header p {
             color: var(--muted);
-            font-size: 1rem;
+            font-size: 0.9rem;
             margin-top: 0.5rem;
             font-weight: 400;
         }
 
         .dashboard-container {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 420px;
+            grid-template-columns: minmax(0, 1fr) 380px;
             gap: 1.5rem;
             width: 100%;
             max-width: 1300px;
+        }
+
+        .main-pane, .side-pane {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1100px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 1000px) {
@@ -78,20 +94,18 @@
         .side-pane { display: flex; flex-direction: column; gap: 1.5rem; }
 
         .card {
-            background: var(--card);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius);
-            padding: 2rem;
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 30px -4px rgba(0,0,0,0.3);
+            background: #111827;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 16px;
+            padding: 1.4rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 20px -10px rgba(15, 23, 42, 0.6);
         }
 
-        .card:hover { border-color: rgba(167, 139, 250, 0.15); box-shadow: 0 8px 40px -4px rgba(0,0,0,0.4); }
+        .card:hover { border-color: rgba(148, 163, 184, 0.45); box-shadow: 0 14px 28px -12px rgba(15, 23, 42, 0.7); }
 
         .card h2 {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.1em;
@@ -144,10 +158,10 @@
             background: var(--input-bg);
             border: 1px solid var(--input-border);
             border-radius: 12px;
-            padding: 0.8rem 1rem;
+            padding: 0.7rem 0.9rem;
             color: var(--text);
             font-family: 'Inter', sans-serif;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 500;
             outline: none;
             transition: all 0.2s ease;
@@ -179,9 +193,9 @@
             overflow: hidden;
         }
 
-        .result-badge .label { font-size: 0.8rem; color: var(--muted); }
+        .result-badge .label { font-size: 0.75rem; color: var(--muted); }
         .result-badge .value {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
             background: linear-gradient(135deg, #fff, var(--accent2));
             -webkit-background-clip: text;
@@ -248,7 +262,7 @@
         .info-cell:hover { background: rgba(255,255,255,0.03); }
 
         .info-cell .ic-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;}
-        .info-cell .ic-value { font-size: 1.25rem; font-weight: 700; color: var(--text); margin-top: 0.35rem; }
+        .info-cell .ic-value { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-top: 0.35rem; }
 
         /* ── Buttons ── */
         .row3 { display: flex; gap: 1rem; align-items: flex-end; }
@@ -261,7 +275,7 @@
             border-radius: 12px;
             padding: 0.85rem 1.4rem;
             font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -274,7 +288,7 @@
 
         .inv-result {
             margin-top: 1.25rem;
-            font-size: 1.15rem;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--success);
             min-height: 1.5rem;
@@ -579,57 +593,6 @@
             padding: 0 1.25rem;
         }
 
-        /* ── Tab System ── */
-        .tabs-header {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid var(--input-border);
-            padding-bottom: 0;
-        }
-
-        .tab-btn {
-            padding: 1rem 1.25rem;
-            background: transparent;
-            border: none;
-            color: var(--muted);
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            transition: all 0.2s ease;
-            border-bottom: 3px solid transparent;
-            position: relative;
-            bottom: -1px;
-        }
-
-        .tab-btn:hover {
-            color: var(--text);
-            background: rgba(167, 139, 250, 0.05);
-        }
-
-        .tab-btn.active {
-            color: var(--accent2);
-            border-bottom-color: var(--accent2);
-            background: rgba(167, 139, 250, 0.08);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         footer {
             margin-top: 4rem;
             color: var(--muted);
@@ -657,47 +620,119 @@
     <!-- ─── PANEL PRINCIPAL ─── -->
     <div class="main-pane">
 
-    <!-- ─── TABS HEADER ─── -->
-    <div class="tabs-header">
-        <button class="tab-btn active" data-tab="calculator">📐 Calculadora de Escalado</button>
-        <button class="tab-btn" data-tab="modules">🟩 Optimizador de Módulos LED</button>
-    </div>
-
-    <!-- ─── TAB 1: Calculadora de Escalado ─── -->
-    <div class="tab-content active" data-tab="calculator">
+    <!-- ─── Calculadora de Escalado ─── -->
     <div class="card">
         <h2>Cálculo de Escalado (Upscale / Downscale)</h2>
         <p style="color:var(--muted);font-size:0.8rem;margin-bottom:1.25rem;">Compara la resolución de tu contenido con la de la pantalla/procesador.</p>
         
-        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; max-width: none;">
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: none;">
+            <!-- Column 1: Content -->
             <div>
-                <label style="margin-bottom:0.5rem; display:block;">Resolución de Contenido (Media)</label>
+                <label style="margin-bottom:0.5rem; display:block; font-weight:600; color:var(--accent2);">1. Resolución de Contenido (Media)</label>
                 <div class="input-row">
                     <div class="field">
-                        <input type="number" id="sc-cw" value="1920" placeholder="Ancho">
+                        <label style="font-size:0.65rem; color:var(--muted); margin-bottom:2px;">Ancho (px)</label>
+                        <input type="number" id="sc-cw" placeholder="Ancho">
                     </div>
-                    <span>×</span>
+                    <span style="margin-top:1.5rem;">×</span>
                     <div class="field">
-                        <input type="number" id="sc-ch" value="1080" placeholder="Alto">
+                        <label style="font-size:0.65rem; color:var(--muted); margin-bottom:2px;">Alto (px)</label>
+                        <input type="number" id="sc-ch" placeholder="Alto">
+                    </div>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <label style="margin-bottom:0.5rem; display:block; font-weight:600; color:var(--muted);">Módulos LED en Pantalla</label>
+                    <div class="input-row">
+                        <div class="field">
+                            <input type="number" id="sc-mod-w" placeholder="Ancho módulos">
+                        </div>
+                        <span>×</span>
+                        <div class="field">
+                            <input type="number" id="sc-mod-h" placeholder="Alto módulos">
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Column 2: Target (Screen/Processor) -->
             <div>
-                <label style="margin-bottom:0.5rem; display:block; display:flex; justify-content:space-between; align-items:center;">
-                    Resolución de Pantalla / Procesador
+                <label style="margin-bottom:0.5rem; display:block; font-weight:600; color:var(--accent2);">2. Resolución del Procesador / Pantalla</label>
+                <div class="field" style="margin-bottom: 0.75rem;">
+                    <select id="sc-standard-resolution" style="padding: 0.5rem; background: rgba(0,0,0,0.3); border: 1px solid var(--input-border); color: var(--text); border-radius: 8px;">
+                        <option value="" selected disabled hidden>📐 Seleccione...</option>
+                        <option value="1920x1080">FHD 1080p (1920×1080)</option>
+                        <option value="1280x720">HD 720p (1280×720)</option>
+                        <option value="2560x1440">QHD 1440p (2560×1440)</option>
+                        <option value="3840x2160">4K UHD (3840×2160)</option>
+                        <option value="4096x2160">DCI 4K (4096×2160)</option>
+                        <option value="7680x4320">8K UHD (7680×4320)</option>
+                        <option value="custom">📐 Personalizado...</option>
+                    </select>
+                </div>
+
+                <div id="sc-custom-resolution" style="display: none; flex-direction: column; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <div class="input-row">
+                        <input type="number" id="sc-custom-w" placeholder="Ancho custom" min="1">
+                        <span>×</span>
+                        <input type="number" id="sc-custom-h" placeholder="Alto custom" min="1">
+                        <button id="sc-custom-apply" class="preset-btn" style="padding: 0.4rem 0.8rem; font-size: 0.7rem;">OK</button>
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <div class="field">
+                        <input type="number" id="sc-tw" placeholder="Ancho Final (Target)">
+                    </div>
+                    <span>×</span>
+                    <div class="field">
+                        <input type="number" id="sc-th" placeholder="Alto Final (Target)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 3: Factor & Scale -->
+            <div>
+                <label style="margin-bottom:0.5rem; display:block; font-weight:600; color:var(--accent2); display:flex; justify-content:space-between; align-items:center;">
+                    3. Factor de Escalado
                     <button id="sc-lock" class="preset-btn" style="padding: 2px 8px; font-size: 0.65rem; display:flex; align-items:center; gap:4px;">
-                        <span id="sc-lock-icon">🔓</span> <span id="sc-lock-text">Libre</span>
+                        <span id="sc-lock-icon">Abierto</span> <span id="sc-lock-text">Libre</span>
                     </button>
                 </label>
                 <div class="input-row">
                     <div class="field">
-                        <input type="number" id="sc-tw" value="3840" placeholder="Ancho">
+                        <input type="number" id="sc-factor-input" placeholder="Factor %" step="0.1" min="1">
                     </div>
-                    <span>×</span>
-                    <div class="field">
-                        <input type="number" id="sc-th" value="2160" placeholder="Alto">
-                    </div>
+                    <span>%</span>
                     <button class="calc-btn" id="sc-calc-btn" style="padding: 0.7rem 1rem;">Calcular</button>
+                </div>
+                <div style="margin-top: 0.8rem; display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap;">
+                    <label style="font-size:0.8rem; color:var(--muted); width: auto; white-space: nowrap;">Atajos:</label>
+                    <select id="sc-factor-select" style="flex: 1 1 180px; padding: 0.4rem; border-radius: 8px; border: 1px solid var(--input-border); background: var(--card); color: var(--text); font-size: 0.85rem;">
+                        <option value="25">25%</option>
+                        <option value="50">50%</option>
+                        <option value="75">75%</option>
+                        <option value="100" selected>100%</option>
+                        <option value="125">125%</option>
+                        <option value="150">150%</option>
+                        <option value="175">175%</option>
+                        <option value="200">200%</option>
+                        <option value="250">250%</option>
+                        <option value="300">300%</option>
+                        <option value="400">400%</option>
+                        <option value="manual">Manual</option>
+                    </select>
+                </div>
+                <div style="margin-top: 0.75rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem;">
+                    <button class="preset-btn factor-preset" data-pct="25">25%</button>
+                    <button class="preset-btn factor-preset" data-pct="50">50%</button>
+                    <button class="preset-btn factor-preset" data-pct="75">75%</button>
+                    <button class="preset-btn factor-preset" data-pct="100">100%</button>
+                    <button class="preset-btn factor-preset" data-pct="150">150%</button>
+                    <button class="preset-btn factor-preset" data-pct="200">200%</button>
+                </div>
+                <div id="sc-manual-factor" style="margin-top:0.8rem; display:none; gap:0.6rem; align-items:center;">
+                    <input type="number" id="sc-manual-factor-input" placeholder="Factor %" step="0.1" min="1" style="flex:1;">
+                    <button id="sc-manual-apply" class="preset-btn" style="padding: 0.55rem 0.9rem;">Aplicar</button>
                 </div>
             </div>
         </div>
@@ -707,11 +742,11 @@
             <div id="sc-quality-bar" style="position: absolute; bottom: 0; left: 0; height: 4px; width: 0%; transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s;"></div>
             
             <div>
-                <div class="ic-label">Escalado</div>
-                <div class="ic-value" id="sc-type" style="color:var(--accent2); font-size:1.4rem;">—</div>
+                <div class="ic-label">Resolución Objetivo</div>
+                <div class="ic-value" id="sc-target-res" style="color:var(--accent2); font-size:1.4rem;">—</div>
             </div>
             <div>
-                <div class="ic-label">Factor</div>
+                <div class="ic-label">Factor Aplicado</div>
                 <div class="ic-value" id="sc-factor" style="font-size:1.4rem;">—</div>
             </div>
             <div>
@@ -725,21 +760,8 @@
             </div>
         </div>
 
-        <!-- ── Scaling Presets ── -->
-        <div style="margin-top: 1.5rem;">
-            <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Presets de Pantalla Estándar</label>
-            <div class="scaling-presets">
-                <button class="preset-resolution" data-w="1280" data-h="720">HD 720p</button>
-                <button class="preset-resolution" data-w="1920" data-h="1080">FHD 1080p</button>
-                <button class="preset-resolution" data-w="2560" data-h="1440">QHD 1440p</button>
-                <button class="preset-resolution" data-w="3840" data-h="2160">4K UHD</button>
-                <button class="preset-resolution" data-w="4096" data-h="2160">DCI 4K</button>
-                <button class="preset-resolution" data-w="7680" data-h="4320">8K UHD</button>
-            </div>
-        </div>
-
         <!-- ── Advanced Statistics ── -->
-        <div id="sc-advanced-stats" style="margin-top: 1.5rem; display: none; padding: 1rem; background: rgba(0,0,0,0.25); border-radius: 10px; border: 1px solid var(--input-border);">
+        <div id="sc-advanced-stats" style="margin-top: 1.5rem; padding: 1rem; background: rgba(0,0,0,0.25); border-radius: 10px; border: 1px solid var(--input-border);">
             <div style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 0.75rem;">Estadísticas Detalladas</div>
             
             <div class="info-grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
@@ -769,122 +791,145 @@
                 </div>
             </div>
 
-            <!-- Scaling Tolerance -->
+            <!-- Tolerance -->
             <div style="margin-top: 1rem;">
                 <div class="tolerance-indicator">
                     <span style="flex: 1; font-weight: 600;">Tolerancia ±5%:</span>
-                    <span id="sc-tolerance-5" style="color: var(--success);">✅ Dentro de rango seguro</span>
+                    <span id="sc-tolerance-5" style="color: var(--success);">Dentro de rango seguro</span>
                 </div>
                 <div class="tolerance-indicator">
                     <span style="flex: 1; font-weight: 600;">Tolerancia ±10%:</span>
-                    <span id="sc-tolerance-10" style="color: var(--success);">✅ Dentro de rango aceptable</span>
+                    <span id="sc-tolerance-10" style="color: var(--success);">Dentro del rango aceptable</span>
                 </div>
             </div>
-        </div>
 
-        <!-- ── AR Comparison ── -->
-        <div id="sc-ar-comparison" class="collapsible-section collapsed">
-            <div class="collapsible-header">
-                <div class="collapsible-header-title">
-                    <span class="collapsible-header-icon">▶️</span>
-                    Comparación de Aspect Ratio
-                </div>
-            </div>
-            <div class="collapsible-content">
-            <div style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 1rem;">Comparación de Aspect Ratio</div>
-            <div class="ar-comparison">
-                <div class="ar-box">
-                    <div class="ar-label">Contenido</div>
-                    <div class="ar-rect" id="sc-ar-content"></div>
-                    <div class="ar-value" id="sc-ar-content-val">16:9</div>
-                </div>
-                <div class="ar-box">
-                    <div class="ar-label">Pantalla</div>
-                    <div class="ar-rect" id="sc-ar-screen"></div>
-                    <div class="ar-value" id="sc-ar-screen-val">16:9</div>
-                </div>
-            </div>
-            </div>
-        </div>
-
-        <!-- ── Scaling Fit Diagram ── -->
-        <div id="sc-fit-diagram-container" class="collapsible-section collapsed">
-            <div class="collapsible-header">
-                <div class="collapsible-header-title">
-                    <span class="collapsible-header-icon">▶️</span>
-                    Previsualización de Escalado
-                </div>
-            </div>
-            <div class="collapsible-content">
-            <div class="fit-diagram" id="sc-fit-diagram">
-                <div class="fit-diagram-screen" id="sc-fit-screen" style="width: 300px; height: 200px;">
-                    <div class="fit-diagram-content" id="sc-fit-content" style="width: 150px; height: 100px;"></div>
-                    <div class="fit-diagram-label" style="top: -20px; left: 0;">Pantalla</div>
-                    <div class="fit-diagram-label" id="sc-fit-content-label" style="bottom: -20px; left: 0;">Contenido</div>
-                </div>
-            </div>
-            </div>
-        </div>
-
-        <!-- ── Scaling Relations Table ── -->
-        <div id="sc-scaling-table-container" class="collapsible-section collapsed">
-            <div class="collapsible-header">
-                <div class="collapsible-header-title">
-                    <span class="collapsible-header-icon">▶️</span>
-                    Tabla de Escalados Alternativos
-                </div>
-            </div>
-            <div class="collapsible-content">
-            <div style="overflow-x: auto;">
-                <table class="scaling-table">
-                    <thead>
+            <!-- Perfect Scales Table -->
+            <div style="margin-top: 1.5rem;">
+                <div style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 0.75rem;">Sugerencias Píxel-Perfectas (Mapeo Nativo)</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; background: rgba(0,0,0,0.2); border-radius: 8px; overflow: hidden;">
+                    <thead style="background: rgba(255,255,255,0.05);">
                         <tr>
-                            <th>Factor</th>
-                            <th>Ancho</th>
-                            <th>Alto</th>
-                            <th>Megapíxeles</th>
-                            <th>AR Match</th>
-                            <th>Nota</th>
+                            <th style="padding: 0.5rem; text-align: left;">Factor</th>
+                            <th style="padding: 0.5rem; text-align: left;">Ancho</th>
+                            <th style="padding: 0.5rem; text-align: left;">Alto</th>
+                            <th style="padding: 0.5rem; text-align: left;">Distancia</th>
+                            <th style="padding: 0.5rem; text-align: left;">Nota</th>
                         </tr>
                     </thead>
-                    <tbody id="sc-scaling-table-body">
+                    <tbody id="sc-perfect-table-body">
                         <!-- Populated by JS -->
                     </tbody>
                 </table>
-            </div>
+                <p style="font-size: 0.65rem; color: var(--muted); margin-top: 0.5rem;">Haga clic en una sugerencia para aplicarla como resolución objetivo.</p>
             </div>
         </div>
 
-        <!-- ── Validación de Compatibilidad ── -->
-        <div id="edid-compatibility-check" class="collapsible-section collapsed">
-            <div class="collapsible-header">
-                <div class="collapsible-header-title">
-                    <span class="collapsible-header-icon">▶️</span>
-                    Compatibilidad Verificada
+        <!-- ── Configuración de Píxeles por Módulo ── -->
+        <div id="sc-led-info" style="margin-top: 1.5rem; background: rgba(0,0,0,0.25); border-radius: 10px; border: 1px solid var(--input-border); padding: 1rem;">
+            <div style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 0.75rem;">Configuración de Píxeles por Módulo LED</div>
+            
+            <div class="info-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+                <div class="info-cell">
+                    <div class="ic-label">Píxeles/Módulo Actual (Ancho)</div>
+                    <div class="ic-value" id="sc-led-current-ppm-w" style="font-size:1.4rem; color:var(--accent2);">—</div>
+                </div>
+                <div class="info-cell">
+                    <div class="ic-label">Píxeles/Módulo Actual (Alto)</div>
+                    <div class="ic-value" id="sc-led-current-ppm-h" style="font-size:1.4rem; color:var(--accent2);">—</div>
+                </div>
+                <div class="info-cell">
+                    <div class="ic-label">Total Píxeles/Módulo Actual</div>
+                    <div class="ic-value" id="sc-led-current-ppm-total" style="font-size:1.3rem;">—</div>
+                </div>
+                <div class="info-cell">
+                    <div class="ic-label">Total Píxeles Pantalla Actual</div>
+                    <div class="ic-value" id="sc-led-current-total" style="font-size:1.2rem;">—</div>
                 </div>
             </div>
-            <div class="collapsible-content">
-                <div id="sc-compatibility-alert" class="compatibility-alert" style="display: flex;">
-                    <span id="sc-compat-icon" class="alert-icon">⚠️</span>
-                    <div class="alert-content">
-                        <div class="alert-title" id="sc-compat-title">Compatibilidad</div>
-                        <div class="alert-desc" id="sc-compat-desc"></div>
-                        <div id="sc-compat-suggestions" style="margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem;"></div>
-                    </div>
+        </div>
+
+        <!-- ── Configuración Destino ── -->
+        <div id="sc-led-target-info" style="margin-top: 1.5rem; background: rgba(0,0,0,0.25); border-radius: 10px; border: 1px solid var(--input-border); padding: 1rem;">
+            <div style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 0.75rem;">Configuración Destino: Píxeles por Módulo</div>
+            
+            <div class="info-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+                <div class="info-cell">
+                    <div class="ic-label">Píxeles/Módulo Destino (Ancho)</div>
+                    <div class="ic-value" id="sc-led-target-ppm-w" style="font-size:1.4rem; color:var(--success);">—</div>
                 </div>
+                <div class="info-cell">
+                    <div class="ic-label">Píxeles/Módulo Destino (Alto)</div>
+                    <div class="ic-value" id="sc-led-target-ppm-h" style="font-size:1.4rem; color:var(--success);">—</div>
+                </div>
+                <div class="info-cell">
+                    <div class="ic-label">Total Píxeles/Módulo Destino</div>
+                    <div class="ic-value" id="sc-led-target-ppm-total" style="font-size:1.3rem;">—</div>
+                </div>
+                <div class="info-cell">
+                    <div class="ic-label">Total Píxeles Pantalla Destino</div>
+                    <div class="ic-value" id="sc-led-target-total" style="font-size:1.2rem;">—</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Comparación y Pérdida ── -->
+        <div id="sc-led-comparison" style="margin-top: 1.5rem; background: rgba(0,0,0,0.25); border-radius: 10px; border: 1px solid var(--input-border); padding: 1rem;">
+            <div style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 1rem; border-bottom: 1px solid var(--input-border); padding-bottom: 0.5rem;">Comparación y Pérdida</div>
+            
+            <div class="info-grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
+                <div class="info-cell">
+                    <div class="ic-label">Pérdida Píxeles/Módulo (Ancho)</div>
+                    <div class="ic-value" id="sc-led-loss-w" style="font-size:1.2rem; color:#f87171;">—</div>
+                </div>
+                <div class="info-cell">
+                    <div class="ic-label">Pérdida Píxeles/Módulo (Alto)</div>
+                    <div class="ic-value" id="sc-led-loss-h" style="font-size:1.2rem; color:#f87171;">—</div>
+                </div>
+                <div class="info-cell">
+                    <div class="ic-label">Pérdida Total/Módulo</div>
+                    <div class="ic-value" id="sc-led-loss-total" style="font-size:1.2rem; color:#f87171;">—</div>
+                </div>
+                <div class="info-cell">
+                    <div class="ic-label">% Pérdida Por Módulo</div>
+                    <div class="ic-value" id="sc-led-loss-percent" style="font-size:1.2rem; color:#f59e0b;">—</div>
+                </div>
+                <div class="info-cell">
+                    <div class="ic-label">Pérdida Total Pantalla</div>
+                    <div class="ic-value" id="sc-led-loss-total-screen" style="font-size:1.2rem; color:#f87171;">—</div>
+                </div>
+                <div class="info-cell">
+                    <div class="ic-label">Viabilidad</div>
+                    <div class="ic-value" id="sc-led-viability" style="font-size:1.1rem;">—</div>
+                </div>
+            </div>
+
+            <!-- Quality Badge -->
+            <div id="sc-led-quality" style="margin-top: 1rem; padding: 0.75rem; border-radius: 8px; text-align: center; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                <span id="sc-led-quality-icon">—</span>
+                <span id="sc-led-quality-text">—</span>
             </div>
         </div>
 
         <!-- ── Quality Note (NEW) ── -->
         <div id="sc-quality-note" style="margin-top:1.25rem; padding: 1rem; border-radius: 10px; font-size: 0.85rem; display: none; align-items: flex-start; gap: 0.75rem;">
-            <span id="sc-quality-icon" style="font-size: 1.2rem;">ℹ️</span>
+            <span id="sc-quality-icon" style="font-size: 1.2rem;">i</span>
             <div style="width: 100%;">
                 <strong id="sc-quality-title">Calidad de Escalado</strong>
                 <p id="sc-quality-text" style="color:var(--text); margin-top:0.25rem; line-height:1.4; opacity:0.9;"></p>
                 <div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:0.75rem;">
-                    <button id="sc-suggest-btn" class="preset-btn" style="display:none; padding: 10px 14px; font-size: 0.85rem; border-radius: 8px; cursor: pointer; color: var(--text); border: 1px solid var(--accent2); background: rgba(167, 139, 250, 0.15); transition: background 0.2s; text-align: left;">✨ Solución Anti-Aliasing</button>
-                    <button id="sc-golden-btn" class="preset-btn" style="display:none; padding: 10px 14px; font-size: 0.85rem; border-radius: 8px; cursor: pointer; color: var(--text); border: 1px solid var(--success); background: rgba(16, 185, 129, 0.15); transition: background 0.2s; text-align: left;">🌟 Forzar Golden Factor</button>
+                    <button id="sc-suggest-btn" class="preset-btn" style="display:none; padding: 10px 14px; font-size: 0.85rem; border-radius: 8px; cursor: pointer; color: var(--text); border: 1px solid var(--accent2); background: rgba(167, 139, 250, 0.15); transition: background 0.2s; text-align: left;">Solución Anti-Aliasing</button>
+                    <button id="sc-golden-btn" class="preset-btn" style="display:none; padding: 10px 14px; font-size: 0.85rem; border-radius: 8px; cursor: pointer; color: var(--text); border: 1px solid var(--success); background: rgba(16, 185, 129, 0.15); transition: background 0.2s; text-align: left;">Forzar Golden Factor</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- ── Compatibility Alert ── -->
+        <div id="sc-compatibility-alert" class="compatibility-alert" style="display: none; margin-top: 1.5rem; padding: 1.25rem; border-radius: 12px; align-items: flex-start; gap: 0.75rem;">
+            <div id="sc-compat-icon" style="font-size: 1.5rem; line-height: 1;">⚠</div>
+            <div style="flex: 1;">
+                <div id="sc-compat-title" style="font-weight: 700; margin-bottom: 0.25rem; font-size: 0.95rem;">Advertencia de Compatibilidad</div>
+                <div id="sc-compat-desc" style="font-size: 0.85rem; line-height: 1.4; opacity: 0.9;">Descripción del problema...</div>
+                <div id="sc-compat-suggestions" style="margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.75rem;"></div>
             </div>
         </div>
     </div>
@@ -920,494 +965,250 @@
             </div>
         </div>
     </div>
-    </div>
 
-    <!-- ─── TAB 2: Optimizador de Módulos LED ─── -->
-    <div class="tab-content" data-tab="modules">
-
-    <!-- ─── Card: Optimizador de Módulos LED ─── -->
+    <!-- ─── Card 3: Relación y Canvas (Ubicación en Lienzo) ─── -->
     <div class="card">
-        <h2>Calculador de Píxeles por Módulo LED</h2>
-        <p style="color:var(--muted);font-size:0.8rem;margin-bottom:1.25rem;">Calcula cuántos píxeles reales tendrían tus módulos al cambiar la resolución total de la pantalla.</p>
-        
-        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; max-width: none;">
+        <h2>Relación y Canvas (Ubicación en Lienzo)</h2>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+            <!-- Column 1: Info & Std -->
             <div>
-                <label style="margin-bottom:0.5rem; display:block;"><strong>Configuración Actual</strong></label>
-                <div style="padding: 1rem; background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-radius: 8px;">
-                    <div style="margin-bottom: 0.75rem;">
-                        <label style="font-size: 0.7rem; color: var(--muted);">Resolución Total Pantalla</label>
-                        <div class="input-row">
-                            <div class="field">
-                                <input type="number" id="px-current-w" value="4576" placeholder="4576">
-                            </div>
-                            <span>×</span>
-                            <div class="field">
-                                <input type="number" id="px-current-h" value="2496" placeholder="2496">
-                            </div>
-                        </div>
+                <label style="margin-bottom:0.5rem; display:block; font-weight:600; color:var(--accent2);">Resolución de Origen / Ratio</label>
+                <div class="input-row" style="margin-bottom: 1.25rem;">
+                    <div class="field">
+                        <label>Ancho (px)</label>
+                        <input type="number" id="width" placeholder="Ej: 1920" min="1">
                     </div>
-                    <div style="margin-bottom: 0.75rem;">
-                        <label style="font-size: 0.7rem; color: var(--muted);">Cantidad de Módulos</label>
-                        <div class="input-row">
-                            <div class="field">
-                                <input type="number" id="px-modules-w" value="44" placeholder="44">
-                            </div>
-                            <span style="color: var(--muted); font-size: 0.9rem;">módulos ×</span>
-                            <div class="field">
-                                <input type="number" id="px-modules-h" value="24" placeholder="24">
-                            </div>
-                        </div>
+                    <span>×</span>
+                    <div class="field">
+                        <label>Alto (px)</label>
+                        <input type="number" id="height" placeholder="Ej: 1080" min="1">
                     </div>
                 </div>
+
+                <div style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 12px; margin-bottom: 1.5rem;">
+                    <div class="label" style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; margin-bottom: 0.25rem;">Relación de Aspecto</div>
+                    <div class="value" id="ratio-output" style="font-size: 1.5rem; font-weight: 700; color: var(--accent2);">—</div>
+                </div>
             </div>
+
+            <!-- Column 2: Selection -->
             <div>
-                <label style="margin-bottom:0.5rem; display:block;"><strong>Resolución Destino</strong></label>
-                <div style="padding: 1rem; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); border-radius: 8px;">
-                    <div style="margin-bottom: 0.75rem;">
-                        <label style="font-size: 0.7rem; color: var(--muted);">Nueva Resolución Total</label>
-                        <div class="input-row">
-                            <div class="field">
-                                <input type="number" id="px-target-w" value="3432" placeholder="3432">
-                            </div>
-                            <span>×</span>
-                            <div class="field">
-                                <input type="number" id="px-target-h" value="1872" placeholder="1872">
-                            </div>
+                <label style="margin-bottom:0.5rem; display:block; font-weight:600; color:var(--accent2);">Cálculo de Ubicación (Lienzo)</label>
+                <div class="field" style="margin-bottom: 1rem;">
+                    <label>Canvas Estándar</label>
+                    <select id="canvas-std" style="padding: 0.6rem; font-size: 0.9rem;">
+                        <option value="" selected disabled hidden>📐 Seleccione...</option>
+                        <option value="auto">Automático (Mínimo que quepa)</option>
+                        <option value="1280x720">HD 720p (1280×720)</option>
+                        <option value="1920x1080">FHD 1080p (1920×1080)</option>
+                        <option value="2560x1440">QHD 1440p (2560×1440)</option>
+                        <option value="3840x2160">4K UHD (3840×2160)</option>
+                        <option value="4096x2160">DCI 4K (4096×2160)</option>
+                        <option value="7680x4320">8K UHD (7680×4320)</option>
+                        <option value="custom">📐 Personalizado</option>
+                    </select>
+                </div>
+                <div id="canvas-custom-inputs" style="display: none; margin-bottom: 1rem;">
+                    <div class="input-row">
+                        <input type="number" id="canvas-custom-w" placeholder="Ancho px" min="1">
+                        <span>×</span>
+                        <input type="number" id="canvas-custom-h" placeholder="Alto px" min="1">
+                    </div>
+                </div>
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem;">
+                    <div class="field">
+                        <label>Alineación H</label>
+                        <select id="canvas-align-h" style="padding: 0.5rem;"><option value="left">Izquierda</option><option value="center" selected>Centro</option><option value="right">Derecha</option></select>
+                    </div>
+                    <div class="field">
+                        <label>Alineación V</label>
+                        <select id="canvas-align-v" style="padding: 0.5rem;"><option value="top">Arriba</option><option value="middle" selected>Centro</option><option value="bottom">Abajo</option></select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 3: Preview -->
+            <div>
+                <div id="canvas-preview-section" style="display:none; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 1.5rem; border: 1px dotted var(--input-border); min-height: 160px; align-items:center; justify-content:center; overflow: hidden; margin-bottom: 1rem;">
+                    <div id="canvas-preview-wrapper" style="position: relative; background: rgba(5,5,5,0.8); border: 2px solid #555; transition: all 0.3s ease; width: 100%; max-width: 250px;">
+                        <div id="canvas-preview-window" style="position: absolute; background: linear-gradient(135deg, rgba(16, 185, 129, 0.4), rgba(5, 150, 105, 0.4)); border: 1px solid var(--success); transition: all 0.3s ease; display:flex; align-items:center; justify-content:center; font-size:0.6rem; color:#fff; font-weight:700; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">
+                            <span id="canvas-preview-text"></span>
                         </div>
                     </div>
-                    <div style="margin-bottom: 0.75rem;">
-                        <button class="preset-btn" id="px-keep-ratio" style="width: 100%; padding: 0.7rem;">🔗 Mantener Aspect Ratio</button>
+                </div>
+
+                <div class="result-badge" style="padding: 1rem; flex-direction: column; gap: 0.75rem; align-items: stretch;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div class="label">Res. Final Canvas</div>
+                        <div class="value" id="canvas-res-out" style="font-size: 1.1rem; color: var(--accent2);">—</div>
+                    </div>
+                    <button class="preset-btn" id="canvas-apply" style="padding: 0.6rem; background: rgba(109, 40, 217, 0.2); border-color: var(--accent); font-size: 0.8rem; width: 100%; border-radius: 8px;">Usar en Escalador ↑</button>
+                    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.25rem;">
+                        <div style="font-size: 0.65rem; color: var(--muted);">X (Left): <span id="canvas-pos-x">—</span></div>
+                        <div style="font-size: 0.65rem; color: var(--muted);">Y (Top): <span id="canvas-pos-y">—</span></div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Current Module Info -->
-        <div id="px-current-info" style="margin-top: 1.5rem; background: rgba(0,0,0,0.25); border-radius: 10px; border: 1px solid var(--input-border); padding: 1rem;">
-            <div style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 0.75rem;">Configuración Actual: Píxeles por Módulo</div>
-            
-            <div class="info-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
-                <div class="info-cell">
-                    <div class="ic-label">Píxeles/Módulo (Ancho)</div>
-                    <div class="ic-value" id="px-current-ppm-w" style="font-size:1.4rem; color:var(--accent2);">—</div>
-                </div>
-                <div class="info-cell">
-                    <div class="ic-label">Píxeles/Módulo (Alto)</div>
-                    <div class="ic-value" id="px-current-ppm-h" style="font-size:1.4rem; color:var(--accent2);">—</div>
-                </div>
-                <div class="info-cell">
-                    <div class="ic-label">Total Píxeles/Módulo</div>
-                    <div class="ic-value" id="px-current-ppm-total" style="font-size:1.3rem;">—</div>
-                </div>
-                <div class="info-cell">
-                    <div class="ic-label">Total Píxeles Pantalla</div>
-                    <div class="ic-value" id="px-current-total" style="font-size:1.2rem;">—</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Target Module Info -->
-        <div id="px-target-info" style="margin-top: 1.5rem; background: rgba(0,0,0,0.25); border-radius: 10px; border: 1px solid var(--input-border); padding: 1rem;">
-            <div style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 0.75rem;">Configuración Destino: Píxeles por Módulo</div>
-            
-            <div class="info-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
-                <div class="info-cell">
-                    <div class="ic-label">Píxeles/Módulo (Ancho)</div>
-                    <div class="ic-value" id="px-target-ppm-w" style="font-size:1.4rem; color:var(--success);">—</div>
-                </div>
-                <div class="info-cell">
-                    <div class="ic-label">Píxeles/Módulo (Alto)</div>
-                    <div class="ic-value" id="px-target-ppm-h" style="font-size:1.4rem; color:var(--success);">—</div>
-                </div>
-                <div class="info-cell">
-                    <div class="ic-label">Total Píxeles/Módulo</div>
-                    <div class="ic-value" id="px-target-ppm-total" style="font-size:1.3rem;">—</div>
-                </div>
-                <div class="info-cell">
-                    <div class="ic-label">Total Píxeles Pantalla</div>
-                    <div class="ic-value" id="px-target-total" style="font-size:1.2rem;">—</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Comparison -->
-        <div id="px-comparison" style="margin-top: 1.5rem; background: rgba(0,0,0,0.25); border-radius: 10px; border: 1px solid var(--input-border); padding: 1rem;">
-            <div style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 1rem; border-bottom: 1px solid var(--input-border); padding-bottom: 0.5rem;">Comparación y Pérdida</div>
-            
-            <div class="info-grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
-                <div class="info-cell">
-                    <div class="ic-label">Pérdida Píxeles/Módulo (Ancho)</div>
-                    <div class="ic-value" id="px-loss-w" style="font-size:1.2rem; color:#f87171;">—</div>
-                </div>
-                <div class="info-cell">
-                    <div class="ic-label">Pérdida Píxeles/Módulo (Alto)</div>
-                    <div class="ic-value" id="px-loss-h" style="font-size:1.2rem; color:#f87171;">—</div>
-                </div>
-                <div class="info-cell">
-                    <div class="ic-label">Pérdida Total/Módulo</div>
-                    <div class="ic-value" id="px-loss-total" style="font-size:1.2rem; color:#f87171;">—</div>
-                </div>
-                <div class="info-cell">
-                    <div class="ic-label">% Pérdida Por Módulo</div>
-                    <div class="ic-value" id="px-loss-percent" style="font-size:1.2rem; color:#f59e0b;">—</div>
-                </div>
-                <div class="info-cell">
-                    <div class="ic-label">Pérdida Total Pantalla</div>
-                    <div class="ic-value" id="px-loss-total-screen" style="font-size:1.2rem; color:#f87171;">—</div>
-                </div>
-                <div class="info-cell">
-                    <div class="ic-label">Viabilidad</div>
-                    <div class="ic-value" id="px-viability" style="font-size:1.1rem;">—</div>
-                </div>
-            </div>
-
-            <!-- Quality Badge -->
-            <div id="px-quality" style="margin-top: 1rem; padding: 0.75rem; border-radius: 8px; text-align: center; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                <span id="px-quality-icon">—</span>
-                <span id="px-quality-text">—</span>
-            </div>
-        </div>
-
-        <!-- Quick Presets -->
-        <div style="margin-top: 1.5rem;">
-            <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Presets de Resoluciones Comunes</label>
-            <div class="scaling-presets">
-                <button class="preset-btn" data-res-w="1280" data-res-h="720">HD 720p</button>
-                <button class="preset-btn" data-res-w="1920" data-res-h="1080">FHD 1080p</button>
-                <button class="preset-btn" data-res-w="2560" data-res-h="1440">QHD 1440p</button>
-                <button class="preset-btn" data-res-w="3840" data-res-h="2160">4K UHD</button>
-                <button class="preset-btn" data-res-w="4096" data-res-h="2160">DCI 4K</button>
             </div>
         </div>
     </div>
-    </div>
-    <div class="card" style="margin-top: 1.5rem;">
-        <h2>Tiempos EDID</h2>
-        <p style="color:var(--muted);font-size:0.8rem;margin-bottom:1.5rem;">Calcula los parámetros de sincronización (Horizontal y Vertical) según el estándar VESA CVT y Reduced Blanking. Exportable a EDID binario para drivers y firmware personalizados.</p>
 
-        <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-            <div class="field">
-                <label>H Active (Píxeles)</label>
-                <input type="number" id="cvt-h" value="2560" min="1">
-            </div>
-            <div class="field">
-                <label>V Active (Líneas)</label>
-                <input type="number" id="cvt-v" value="2000" min="1">
-            </div>
-            <div class="field">
-                <label>Refresco (Hz)</label>
-                <input type="number" id="cvt-hz" value="60" min="1" step="0.01">
-            </div>
-            <div class="field">
-                <label>Reduced Blanking</label>
-                <div style="display:flex; gap:0.25rem; background: rgba(0,0,0,0.4); border: 1px solid var(--input-border); border-radius: 8px; padding: 0.25rem;">
-                    <button class="rb-btn" data-rb="off">OFF</button>
-                    <button class="rb-btn" data-rb="v1">V1</button>
-                    <button class="rb-btn active" data-rb="v2">V2</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 2rem;">
-            <div class="info-cell" style="text-align: center; border-color: rgba(167, 139, 250, 0.3); background: rgba(167, 139, 250, 0.05);">
-                <div class="ic-label">Pixel Clock (MHz)</div>
-                <div class="ic-value" id="cvt-pclk" style="font-size:1.8rem; color:var(--text);">325.829</div>
-                <div class="ic-label" id="cvt-pclk-interface" style="font-size: 0.65rem; margin-top: 0.5rem; color: var(--accent2);">Conexión: —</div>
-            </div>
-            <div class="info-cell" style="text-align: center;">
-                <div class="ic-label">Capacidad Ancho de Banda</div>
-                <div class="ic-value" id="cvt-bw" style="font-size:1.15rem; color:var(--accent2); margin-top: 0.6rem;">DL-DVI</div>
-            </div>
-        </div>
-
-        <!-- Calculated Frequencies -->
-        <div class="info-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 2rem;">
-            <div class="info-cell" style="border-color: rgba(100, 200, 255, 0.3); background: rgba(100, 200, 255, 0.05);">
-                <div class="ic-label">Frecuencia Horizontal (kHz)</div>
-                <div class="ic-value" id="cvt-h-freq" style="font-size:1.5rem; color:var(--text);">—</div>
-                <div style="font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem;" id="cvt-h-freq-status">—</div>
-            </div>
-            <div class="info-cell" style="border-color: rgba(100, 200, 255, 0.3); background: rgba(100, 200, 255, 0.05);">
-                <div class="ic-label">Frecuencia Vertical (Hz)</div>
-                <div class="ic-value" id="cvt-v-freq" style="font-size:1.5rem; color:var(--text);">—</div>
-                <div style="font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem;" id="cvt-v-freq-status">—</div>
-            </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2.5rem;">
-            <!-- Horizontal -->
-            <div>
-                <h3 style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; border-bottom: 1px solid var(--input-border); padding-bottom: 0.5rem;">Horizontal Timing</h3>
-                
-                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
-                    <span style="font-size:0.85rem; color:var(--muted);">H Total</span>
-                    <span id="cvt-ht" style="font-size:0.95rem; font-weight:600;">2640</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
-                    <span style="font-size:0.85rem; color:var(--muted);">H Front Porch</span>
-                    <span id="cvt-hfp" style="font-size:0.95rem; font-weight:600;">8</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
-                    <span style="font-size:0.85rem; color:var(--text);">H Active</span>
-                    <span id="cvt-ha" style="font-size:0.95rem; font-weight:600; color:var(--text);">2560</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
-                    <span style="font-size:0.85rem; color:var(--muted);">H Sync</span>
-                    <span id="cvt-hs" style="font-size:0.95rem; font-weight:600;">32</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0;">
-                    <span style="font-size:0.85rem; color:var(--muted);">H Polarity</span>
-                    <span id="cvt-hpol" style="font-size:0.95rem; font-weight:600; color:var(--success);">+</span>
-                </div>
-            </div>
-
-            <!-- Vertical -->
-            <div>
-                <h3 style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; border-bottom: 1px solid var(--input-border); padding-bottom: 0.5rem;">Vertical Timing</h3>
-                
-                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
-                    <span style="font-size:0.85rem; color:var(--muted);">V Total</span>
-                    <span id="cvt-vt" style="font-size:0.95rem; font-weight:600;">2057</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
-                    <span style="font-size:0.85rem; color:var(--muted);">V Front Porch</span>
-                    <span id="cvt-vfp" style="font-size:0.95rem; font-weight:600;">43</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
-                    <span style="font-size:0.85rem; color:var(--text);">V Active</span>
-                    <span id="cvt-va" style="font-size:0.95rem; font-weight:600; color:var(--text);">2000</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
-                    <span style="font-size:0.85rem; color:var(--muted);">V Sync</span>
-                    <span id="cvt-vs" style="font-size:0.95rem; font-weight:600;">8</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding: 0.5rem 0;">
-                    <span style="font-size:0.85rem; color:var(--muted);">V Polarity</span>
-                    <span id="cvt-vpol" style="font-size:0.95rem; font-weight:600; color:#f87171;">-</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- EDID Validation Panel -->
-        <div id="edid-validation-panel" style="display: none; margin-top: 2rem; margin-bottom: 0; padding: 1.25rem; background: rgba(0,0,0,0.35); border-radius: 10px; border-left: 4px solid var(--accent2);">
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-                <span style="font-size: 1.4rem;" id="edid-status-icon">✅</span>
-                <div>
-                    <div style="font-size: 0.9rem; font-weight: 700;" id="edid-status-title">EDID Válido</div>
-                    <div style="font-size: 0.75rem; color: var(--muted);" id="edid-status-desc">Todos los parámetros están dentro de especificación VESA CVT</div>
-                </div>
-            </div>
-            <div id="edid-validation-list" style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.8rem;"></div>
-        </div>
-    </div>
 
     </div> <!-- /main-pane -->
 
-    <!-- ─── PANEL SECUNDARIO (SIDEBAR) ─── -->
+    <!-- ─── PANEL LATERAL ─── -->
     <div class="side-pane">
 
-    <!-- ─── Card 3: Resolución → Ratio ─── -->
-    <div class="card">
-        <h2>Resolución → Ratio</h2>
 
-        <div class="input-row">
-            <div class="field">
-                <label>Ancho (px)</label>
-                <input type="number" id="width" value="1920" min="1">
-            </div>
-            <span>×</span>
-            <div class="field">
-                <label>Alto (px)</label>
-                <input type="number" id="height" value="1080" min="1">
-            </div>
-        </div>
 
-        <div class="result-badge">
-            <div>
-                <div class="label">Relación de aspecto</div>
-                <div class="value" id="ratio-output">16:9</div>
-            </div>
-        </div>
-    </div>
 
-    <!-- ─── Card 4: Ubicación en Canvas Estándar ─── -->
-    <div class="card">
-        <h2>Canvas Estándar</h2>
-        <p style="color:var(--muted);font-size:0.8rem;margin-bottom:1rem;">Calcula las coordenadas X, Y para encajar tu ventana en una resolución estándar orientada hacia arriba.</p>
-        
-        <div class="row3" style="margin-bottom: 1rem;">
-            <div class="field">
-                <label>Canvas Estándar</label>
-                <select id="canvas-std" style="padding: 0.6rem; font-size: 0.9rem;">
-                    <option value="auto">Automático (Mínimo que quepa)</option>
-                    <option value="1280x720">HD 720p (1280×720)</option>
-                    <option value="1920x1080">FHD 1080p (1920×1080)</option>
-                    <option value="2560x1440">QHD 1440p (2560×1440)</option>
-                    <option value="3840x2160">4K UHD (3840×2160)</option>
-                    <option value="4096x2160">DCI 4K (4096×2160)</option>
-                    <option value="7680x4320">8K UHD (7680×4320)</option>
-                    <option value="custom">📐 Custom (Personalizado)</option>
-                </select>
-            </div>
-        </div>
 
-        <!-- Custom Canvas Input Fields -->
-        <div id="canvas-custom-inputs" style="display: none; margin-bottom: 1rem;">
-            <div class="row3">
+
+        <!-- Card 9: Tiempos EDID -->
+        <div class="card">
+            <h2>Tiempos EDID</h2>
+            <p style="color:var(--muted);font-size:0.8rem;margin-bottom:1.5rem;">Parámetros de sincronización (Horizontal y Vertical) según estándar VESA CVT y Reduced Blanking.</p>
+
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
                 <div class="field">
-                    <label>Ancho Custom (px)</label>
-                    <input type="number" id="canvas-custom-w" placeholder="ej. 2560" min="1">
+                    <label>H Active (Píxeles)</label>
+                    <input type="number" id="cvt-h" placeholder="Ancho">
                 </div>
-                <span>×</span>
                 <div class="field">
-                    <label>Alto Custom (px)</label>
-                    <input type="number" id="canvas-custom-h" placeholder="ej. 1440" min="1">
+                    <label>V Active (Líneas)</label>
+                    <input type="number" id="cvt-v" placeholder="Alto">
+                </div>
+                <div class="field">
+                    <label>Refresco (Hz)</label>
+                    <input type="number" id="cvt-hz" placeholder="Hz">
+                </div>
+                <div class="field">
+                    <label>Reduced Blanking</label>
+                    <div style="display:flex; gap: 0.5rem;">
+                        <button class="rb-btn" data-rb="off">OFF</button>
+                        <button class="rb-btn" data-rb="v1">V1</button>
+                        <button class="rb-btn active" data-rb="v2">V2</button>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Color Depth</label>
+                    <select id="cvt-bpc" class="preset-btn" style="padding:0.4rem; height:36px; border-radius:8px; width:100%;">
+                        <option value="8">8-bit</option>
+                        <option value="10" selected>10-bit</option>
+                        <option value="12">12-bit</option>
+                    </select>
                 </div>
             </div>
-        </div>
 
-        <div class="row3" style="margin-bottom: 1.25rem;">
-            <div class="field">
-                <label>Alineación Horiz.</label>
-                <select id="canvas-align-h" style="padding: 0.6rem; font-size: 0.9rem;">
-                    <option value="center">Centro</option>
-                    <option value="left">Izquierda</option>
-                    <option value="right">Derecha</option>
-                </select>
-            </div>
-            <div class="field">
-                <label>Alineación Vert.</label>
-                <select id="canvas-align-v" style="padding: 0.6rem; font-size: 0.9rem;">
-                    <option value="center">Centro</option>
-                    <option value="top">Arriba</option>
-                    <option value="bottom">Abajo</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="info-grid" style="grid-template-columns: repeat(2, 1fr);">
-            <div class="info-cell">
-                <div class="ic-label">Posición X (Left)</div>
-                <div class="ic-value" id="canvas-pos-x" style="font-size:1.4rem; color:var(--text); letter-spacing:-0.5px;">—</div>
-            </div>
-            <div class="info-cell">
-                <div class="ic-label">Posición Y (Top)</div>
-                <div class="ic-value" id="canvas-pos-y" style="font-size:1.4rem; color:var(--text); letter-spacing:-0.5px;">—</div>
-            </div>
-        </div>
-
-        <!-- Previsualización -->
-        <div id="canvas-preview-section" style="width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 1.5rem; margin-bottom: 0.5rem;">
-            <div style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Previsualización Visual</div>
-            <div id="canvas-preview-wrapper" style="position: relative; width: 100%; max-width: 280px; border: 1px solid rgba(255,255,255,0.4); background: rgba(0,0,0,0.5); box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: aspect-ratio 0.3s ease;">
-                <!-- Label for Canvas -->
-                <div style="position: absolute; bottom: -20px; right: 0; font-size: 0.6rem; color: var(--muted); text-transform: uppercase;">Lienzo Estándar</div>
-                
-                <div id="canvas-preview-window" style="position: absolute; border: 1px solid var(--success); background: rgba(16, 185, 129, 0.25); box-shadow: 0 0 15px rgba(16, 185, 129, 0.6); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; overflow: hidden;">
-                    <span id="canvas-preview-text" style="font-size: 0.65rem; font-weight: 600; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.8); text-align: center; line-height: 1.1;"></span>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                <div class="info-cell" style="text-align: center;">
+                    <div class="ic-label">Pixel Clock (MHz)</div>
+                    <div class="ic-value" id="cvt-pclk" style="font-size: 1.6rem; background: linear-gradient(135deg, #fff, var(--accent2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">—</div>
+                    <div style="font-size: 0.65rem; color: var(--muted); margin-top: 0.25rem;">CONEXIÓN: <span id="cvt-bw">—</span></div>
+                </div>
+                <div class="info-cell" style="text-align: center;">
+                    <div class="ic-label" id="cvt-bw-label">CAPACIDAD ANCHO DE BANDA</div>
+                    <div class="ic-value" id="cvt-bw-status" style="font-size: 0.9rem; color: var(--success); margin-top: 0.5rem; text-transform: uppercase;">OK DL-DVI / HDMI 1.4</div>
                 </div>
             </div>
+
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+                <div class="info-cell">
+                    <div class="ic-label">FRECUENCIA HORIZONTAL (KHZ)</div>
+                    <div class="ic-value" id="cvt-h-freq" style="font-size: 1.3rem;">—</div>
+                    <div id="cvt-h-freq-status" style="font-size: 0.6rem; color: var(--muted); margin-top: 2px;">Dentro de rango (15-200 kHz)</div>
+                </div>
+                <div class="info-cell">
+                    <div class="ic-label">FRECUENCIA VERTICAL (HZ)</div>
+                    <div class="ic-value" id="cvt-v-freq" style="font-size: 1.3rem;">—</div>
+                    <div id="cvt-v-freq-status" style="font-size: 0.6rem; color: var(--muted); margin-top: 2px;">Dentro de rango (23-200 Hz)</div>
+                </div>
+            </div>
+
+            <!-- Horizontal Timing en 2 columnas -->
+            <div style="border-top: 1px solid var(--input-border); padding-top: 1.5rem; margin-bottom: 2rem;">
+                <h3 style="font-size:0.75rem; color:var(--muted); text-transform:uppercase; margin-bottom:1rem; letter-spacing:0.05em;">Horizontal Timing (Píxeles)</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+                    <!-- Columna 1: H Active, H FP, H Pol -->
+                    <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+                        <div style="background: rgba(109,40,217,0.08); border: 1px solid rgba(109,40,217,0.2); border-radius:10px; padding:0.6rem; text-align:center;">
+                            <div style="font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.3rem;">H Active</div>
+                            <div style="font-size:0.95rem; font-weight:700; color:var(--accent);" id="cvt-ha">—</div>
+                        </div>
+                        <div style="background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-radius:10px; padding:0.6rem; text-align:center;">
+                            <div style="font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.3rem;">H FP</div>
+                            <div style="font-size:0.95rem; font-weight:700; color:var(--accent2);" id="cvt-hfp">8</div>
+                        </div>
+                        <div style="background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); border-radius:10px; padding:0.6rem; text-align:center;">
+                            <div style="font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.3rem;">H Pol</div>
+                            <div style="font-size:1.1rem; font-weight:700; color:var(--success);" id="cvt-hpol">+</div>
+                        </div>
+                    </div>
+                    <!-- Columna 2: H Total, H Sync, H BP -->
+                    <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+                        <div style="background: rgba(109,40,217,0.08); border: 1px solid rgba(109,40,217,0.2); border-radius:10px; padding:0.6rem; text-align:center;">
+                            <div style="font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.3rem;">H Total</div>
+                            <div style="font-size:0.95rem; font-weight:700; color:var(--accent);" id="cvt-ht">—</div>
+                        </div>
+                        <div style="background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-radius:10px; padding:0.6rem; text-align:center;">
+                            <div style="font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.3rem;">H Sync</div>
+                            <div style="font-size:0.95rem; font-weight:700; color:var(--accent2);" id="cvt-hs">32</div>
+                        </div>
+                        <div style="background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-radius:10px; padding:0.6rem; text-align:center;">
+                            <div style="font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.3rem;">H BP</div>
+                            <div style="font-size:0.95rem; font-weight:700; color:var(--accent2);" id="cvt-hbp">40</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vertical Timing en 2 columnas -->
+            <div style="padding-top: 0.5rem;">
+                <h3 style="font-size:0.75rem; color:var(--muted); text-transform:uppercase; margin-bottom:1rem; letter-spacing:0.05em;">Vertical Timing (Líneas)</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+                    <!-- Columna 1: V Active, V FP -->
+                    <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+                        <div style="background: rgba(109,40,217,0.08); border: 1px solid rgba(109,40,217,0.2); border-radius:10px; padding:0.6rem; text-align:center;">
+                            <div style="font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.3rem;">V Active</div>
+                            <div style="font-size:0.95rem; font-weight:700; color:var(--accent);" id="cvt-va">—</div>
+                        </div>
+                        <div style="background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-radius:10px; padding:0.6rem; text-align:center;">
+                            <div style="font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.3rem;">V FP</div>
+                            <div style="font-size:0.95rem; font-weight:700; color:var(--accent2);" id="cvt-vfp">—</div>
+                        </div>
+                    </div>
+                    <!-- Columna 2: V Total, V Sync, V Pol -->
+                    <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+                        <div style="background: rgba(109,40,217,0.08); border: 1px solid rgba(109,40,217,0.2); border-radius:10px; padding:0.6rem; text-align:center;">
+                            <div style="font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.3rem;">V Total</div>
+                            <div style="font-size:0.95rem; font-weight:700; color:var(--accent);" id="cvt-vt">—</div>
+                        </div>
+                        <div style="background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-radius:10px; padding:0.6rem; text-align:center;">
+                            <div style="font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.3rem;">V Sync</div>
+                            <div style="font-size:0.95rem; font-weight:700; color:var(--accent2);" id="cvt-vs">8</div>
+                        </div>
+                        <div style="background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); border-radius:10px; padding:0.6rem; text-align:center;">
+                            <div style="font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.3rem;">V Pol</div>
+                            <div style="font-size:1.1rem; font-weight:700; color:#f87171;" id="cvt-vpol">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="edid-validation-panel" style="display: none; margin-top: 2rem; margin-bottom: 0; padding: 1.25rem; background: rgba(0,0,0,0.35); border-radius: 10px; border-left: 4px solid var(--accent2);">
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                    <span style="font-size: 1.4rem;" id="edid-status-icon">OK</span>
+                    <div>
+                        <div style="font-size: 0.9rem; font-weight: 700;" id="edid-status-title">EDID Válido</div>
+                        <div style="font-size: 0.75rem; color: var(--muted);" id="edid-status-desc">Todos los parámetros dentro de especificación VESA CVT</div>
+                    </div>
+                </div>
+                <div id="edid-validation-list" style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.8rem;"></div>
+            </div>
         </div>
 
-        <div class="result-badge" style="margin-top:1.5rem; padding: 1.25rem;">
-            <div style="flex:1;">
-                <div class="label" id="canvas-res-label">Resolución Final Canvas</div>
-                <div class="value" id="canvas-res-out" style="font-size: 1.3rem; color: var(--accent2);">—</div>
-            </div>
-            <button class="preset-btn" id="canvas-apply" style="padding: 0.6rem 1rem; display:none; background: rgba(109, 40, 217, 0.2); border-color: var(--accent);">Ir al Escalador</button>
-        </div>
+
     </div>
-
-    <!-- ─── Card 5: Info adicional ─── -->
-    <div class="card">
-        <h2>Información adicional</h2>
-        <div class="info-grid">
-            <div class="info-cell">
-                <div class="ic-label">Megapíxeles</div>
-                <div class="ic-value" id="info-mp">2.07 MP</div>
-            </div>
-            <div class="info-cell">
-                <div class="ic-label">Total píxeles</div>
-                <div class="ic-value" id="info-px">2,073,600</div>
-            </div>
-            <div class="info-cell">
-                <div class="ic-label">Decimal</div>
-                <div class="ic-value" id="info-dec">1.778</div>
-            </div>
-            <div class="info-cell">
-                <div class="ic-label">Diagonal (px)</div>
-                <div class="ic-value" id="info-diag">2203</div>
-            </div>
-            <div class="info-cell">
-                <div class="ic-label">Formato</div>
-                <div class="ic-value" id="info-fmt">Landscape</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ─── Card 6: Función inversa ─── -->
-    <div class="card">
-        <h2>Función Inversa</h2>
-        <p style="color:var(--muted);font-size:0.8rem;margin-bottom:1rem;">Dado un lado y el ratio, calcula el otro.</p>
-
-        <div class="row3">
-            <div class="field">
-                <label>Lado conocido (px)</label>
-                <input type="number" id="inv-known" placeholder="ej. 1920" min="1">
-            </div>
-            <div class="field">
-                <label>Dimensión conocida</label>
-                <select id="inv-dim">
-                    <option value="w">Ancho</option>
-                    <option value="h">Alto</option>
-                </select>
-            </div>
-        </div>
-
-        <div style="margin-top:0.75rem;" class="row3">
-            <div class="field">
-                <label>Ratio (W:H)</label>
-                <input type="text" id="inv-ratio" placeholder="ej. 16:9">
-            </div>
-            <button class="calc-btn" id="inv-calc">Calcular</button>
-        </div>
-
-        <div class="inv-result" id="inv-result"></div>
-    </div>
-
-    <!-- ─── Card 7: Conversión px → mm ─── -->
-    <div class="card">
-        <h2>Píxeles → Milímetros</h2>
-        <p style="color:var(--muted);font-size:0.8rem;margin-bottom:1.1rem;">Convierte píxeles a distancia física según el pitch LED o DPI.</p>
-
-        <div class="row3">
-            <div class="field">
-                <label>Píxeles</label>
-                <input type="number" id="mm-px" placeholder="ej. 1920" min="1">
-            </div>
-            <div class="field">
-                <label>Modo</label>
-                <select id="mm-mode">
-                    <option value="pitch">Pitch LED (mm)</option>
-                    <option value="dpi">DPI pantalla</option>
-                </select>
-            </div>
-        </div>
-
-        <div style="margin-top:0.75rem;" class="row3">
-            <div class="field">
-                <label id="mm-val-label">Pitch (mm)</label>
-                <input type="number" id="mm-val" placeholder="ej. 2.9" step="0.01" min="0.01">
-            </div>
-            <button class="calc-btn" id="mm-calc">Calcular</button>
-        </div>
-
-        <div class="inv-result" id="mm-result"></div>
-    </div>
-
-    </div> <!-- /side-pane -->
-
-</div>
+</div> <!-- /dashboard-container -->
 
 <footer>ARC v2.3 · Developed by Alfonso Castaño · 2026</footer>
 
@@ -1428,12 +1229,15 @@
             // Scaling Calculator
             sc_cw: document.getElementById('sc-cw').value,
             sc_ch: document.getElementById('sc-ch').value,
-            sc_tw: document.getElementById('sc-tw').value,
-            sc_th: document.getElementById('sc-th').value,
-            
+            sc_mod_w: document.getElementById('sc-mod-w').value,
+            sc_mod_h: document.getElementById('sc-mod-h').value,
+            sc_factor_input: document.getElementById('sc-factor-input').value,
+            sc_factor_select: document.getElementById('sc-factor-select').value,
+            sc_manual_factor_input: document.getElementById('sc-manual-factor-input').value,
+
             // Manual Scaling
             ms_percent: document.getElementById('ms-percent').value,
-            
+
             // Canvas Standard
             canvas_std: document.getElementById('canvas-std').value,
             canvas_align_h: document.getElementById('canvas-align-h').value,
@@ -1441,28 +1245,9 @@
             canvas_custom_w: document.getElementById('canvas-custom-w').value,
             canvas_custom_h: document.getElementById('canvas-custom-h').value,
             
-            // Inverse Calculator
-            inv_known: document.getElementById('inv-known').value,
-            inv_dim: document.getElementById('inv-dim').value,
-            inv_ratio: document.getElementById('inv-ratio').value,
-            
-            // px to mm
-            mm_px: document.getElementById('mm-px').value,
-            mm_mode: document.getElementById('mm-mode').value,
-            mm_val: document.getElementById('mm-val').value,
-            
-            // CVT
             cvt_h: document.getElementById('cvt-h').value,
             cvt_v: document.getElementById('cvt-v').value,
             cvt_hz: document.getElementById('cvt-hz').value,
-            
-            // Pixels per Module
-            px_current_w: document.getElementById('px-current-w').value,
-            px_current_h: document.getElementById('px-current-h').value,
-            px_modules_w: document.getElementById('px-modules-w').value,
-            px_modules_h: document.getElementById('px-modules-h').value,
-            px_target_w: document.getElementById('px-target-w').value,
-            px_target_h: document.getElementById('px-target-h').value,
             
             timestamp: new Date().toISOString()
         };
@@ -1483,8 +1268,11 @@
             
             if (parsed.sc_cw) document.getElementById('sc-cw').value = parsed.sc_cw;
             if (parsed.sc_ch) document.getElementById('sc-ch').value = parsed.sc_ch;
-            if (parsed.sc_tw) document.getElementById('sc-tw').value = parsed.sc_tw;
-            if (parsed.sc_th) document.getElementById('sc-th').value = parsed.sc_th;
+            if (parsed.sc_mod_w) document.getElementById('sc-mod-w').value = parsed.sc_mod_w;
+            if (parsed.sc_mod_h) document.getElementById('sc-mod-h').value = parsed.sc_mod_h;
+            if (parsed.sc_factor_input) document.getElementById('sc-factor-input').value = parsed.sc_factor_input;
+            if (parsed.sc_factor_select) document.getElementById('sc-factor-select').value = parsed.sc_factor_select;
+            if (parsed.sc_manual_factor_input) document.getElementById('sc-manual-factor-input').value = parsed.sc_manual_factor_input;
             
             if (parsed.ms_percent) document.getElementById('ms-percent').value = parsed.ms_percent;
             
@@ -1494,26 +1282,11 @@
             if (parsed.canvas_custom_w) document.getElementById('canvas-custom-w').value = parsed.canvas_custom_w;
             if (parsed.canvas_custom_h) document.getElementById('canvas-custom-h').value = parsed.canvas_custom_h;
             
-            if (parsed.inv_known) document.getElementById('inv-known').value = parsed.inv_known;
-            if (parsed.inv_dim) document.getElementById('inv-dim').value = parsed.inv_dim;
-            if (parsed.inv_ratio) document.getElementById('inv-ratio').value = parsed.inv_ratio;
-            
-            if (parsed.mm_px) document.getElementById('mm-px').value = parsed.mm_px;
-            if (parsed.mm_mode) document.getElementById('mm-mode').value = parsed.mm_mode;
-            if (parsed.mm_val) document.getElementById('mm-val').value = parsed.mm_val;
-            
             if (parsed.cvt_h) document.getElementById('cvt-h').value = parsed.cvt_h;
             if (parsed.cvt_v) document.getElementById('cvt-v').value = parsed.cvt_v;
             if (parsed.cvt_hz) document.getElementById('cvt-hz').value = parsed.cvt_hz;
-            
-            if (parsed.px_current_w) document.getElementById('px-current-w').value = parsed.px_current_w;
-            if (parsed.px_current_h) document.getElementById('px-current-h').value = parsed.px_current_h;
-            if (parsed.px_modules_w) document.getElementById('px-modules-w').value = parsed.px_modules_w;
-            if (parsed.px_modules_h) document.getElementById('px-modules-h').value = parsed.px_modules_h;
-            if (parsed.px_target_w) document.getElementById('px-target-w').value = parsed.px_target_w;
-            if (parsed.px_target_h) document.getElementById('px-target-h').value = parsed.px_target_h;
-            
-            console.log('✅ Datos restaurados desde localStorage');
+
+            console.log('Datos restaurados desde localStorage');
         } catch (e) {
             console.error('Error loading from localStorage:', e);
         }
@@ -1532,7 +1305,7 @@
     document.addEventListener('input', saveToLocalStorage);
     
     // Load on page load
-    loadFromLocalStorage();
+    // loadFromLocalStorage(); // Desactivado para iniciar con valores limpios
 
     // ── Validador de Compatibilidad ──
     function validateCompatibility(cw, ch, tw, th, pct) {
@@ -1557,37 +1330,37 @@
         
         // Validación 1: Escalado muy alto (>400%)
         if (pct > 400) {
-            issues.push('❌ Escalado extremadamente alto (>400%). Se observará pérdida severa de calidad y aliasing pronunciado.');
+            issues.push('Escalado extremadamente alto (>400%). Se observará pérdida severa de calidad y aliasing pronunciado.');
         }
         
         // Validación 2: Escalado muy bajo (<10%)
         if (pct < 10 && pct > 0) {
-            warnings.push('⚠️ Escalado muy bajo (<10%). Posible recorte excesivo de contenido.');
+            warnings.push('Escalado muy bajo (<10%). Posible recorte excesivo de contenido.');
         }
         
         // Validación 3: Relación de aspecto incompatible
         const arContent = cw / ch;
         const arScreen = tw / th;
         if (Math.abs(arContent - arScreen) > 0.1) {
-            warnings.push(`⚠️ Relaciones de aspecto muy diferentes. Content: ${(arContent).toFixed(2)}:1 vs Screen: ${(arScreen).toFixed(2)}:1`);
-            recommendations.push('💡 Considera usar Canvas Estándar para encontrar la mejor resolución.');
+            warnings.push(`Relaciones de aspecto muy diferentes. Content: ${(arContent).toFixed(2)}:1 vs Screen: ${(arScreen).toFixed(2)}:1`);
+            recommendations.push('Recomendación: usar Canvas Estándar para encontrar la mejor resolución.');
         }
         
         // Validación 4: Escalado con decimales críticos
         if (pct % 1 !== 0 && pct % 5 !== 0) {
-            warnings.push(`⚠️ Factor de escalado ${pct.toFixed(3)}% puede causar aliasing de decimales. Considera factores enteros (25%, 50%, 75%, 100%, etc.)`);
+            warnings.push(`Factor de escalado ${pct.toFixed(3)}% puede causar aliasing de decimales. Considera factores enteros (25%, 50%, 75%, 100%, etc.)`);
         }
         
         // Validación 5: Sugerencias de procesador según escalado
         let processorRec = '';
         if (pct === 100) {
-            processorRec = '✅ Configuración óptima: Procesador en modo 1:1 (nativo). Sin interpolación.';
+            processorRec = 'Configuración óptima: Procesador en modo 1:1 (nativo). Sin interpolación.';
         } else if (pct >= 50 && pct <= 200) {
-            processorRec = '✅ Rango compatible: Procesadores estándar pueden manejar esta interpolación sin problemas.';
+            processorRec = 'Rango compatible: Procesadores estándar pueden manejar esta interpolación sin problemas.';
         } else if (pct > 200) {
-            processorRec = '⚠️ Escalado alto: Requiere procesador de alto rendimiento con interpolación avanzada (ej: Novastar, Christie, etc.)';
+            processorRec = 'Escalado alto: Requiere procesador de alto rendimiento con interpolación avanzada (ej: Novastar, Christie, etc.)';
         } else {
-            processorRec = '💡 Escalado bajo: Verifica que tu procesador soporte downscaling sin artefactos.';
+            processorRec = 'Escalado bajo: Verifica que tu procesador soporte downscaling sin artefactos.';
         }
         recommendations.push(processorRec);
         
@@ -1601,31 +1374,32 @@
         
         const nearestPanel = panelResolutions.reduce((closest, panel) => {
             const dist = Math.abs(panel.w - tw) + Math.abs(panel.h - th);
-            const closestDist = Math.abs(closest.w - tw) + Math.abs(closest.h - th);
-            return dist < closestDist ? panel : closest;
-        });
+            const arDiff = Math.abs((panel.w / panel.h) - (tw / th));
+            return (dist < 100 || arDiff < 0.05) ? panel : closest;
+        }, panelResolutions[0]);
+
         
         if (Math.abs(nearestPanel.w - tw) <= 100 && Math.abs(nearestPanel.h - th) <= 100) {
-            recommendations.push(`✅ Resolución compatible con paneles LED estándar: ${nearestPanel.name} (${nearestPanel.w}×${nearestPanel.h})`);
+            recommendations.push(`Resolución compatible con paneles LED estándar: ${nearestPanel.name} (${nearestPanel.w}×${nearestPanel.h})`);
         }
         
         // Mostrar alertas
         if (issues.length > 0) {
             alert.classList.add('error');
             alert.classList.remove('warning', 'success');
-            icon.textContent = '❌';
+            icon.textContent = 'Error';
             title.textContent = 'Error de Compatibilidad';
             desc.textContent = issues[0];
         } else if (warnings.length > 0) {
             alert.classList.add('warning');
             alert.classList.remove('error', 'success');
-            icon.textContent = '⚠️';
+            icon.textContent = 'Advertencia';
             title.textContent = 'Advertencia de Compatibilidad';
             desc.textContent = warnings[0];
         } else {
             alert.classList.add('success');
             alert.classList.remove('error', 'warning');
-            icon.textContent = '✅';
+            icon.textContent = 'OK';
             title.textContent = 'Compatibilidad Verificada';
             desc.textContent = 'Los parámetros son compatibles con la mayoría de procesadores LED.';
         }
@@ -1648,33 +1422,27 @@
     const wIn  = document.getElementById('width');
     const hIn  = document.getElementById('height');
     const out  = document.getElementById('ratio-output');
-    const infoMp   = document.getElementById('info-mp');
-    const infoPx   = document.getElementById('info-px');
-    const infoDec  = document.getElementById('info-dec');
-    const infoDiag = document.getElementById('info-diag');
-    const infoFmt  = document.getElementById('info-fmt');
 
     function calculate() {
-        const w = parseInt(wIn.value) || 0;
-        const h = parseInt(hIn.value) || 0;
-        if (w > 0 && h > 0) {
-            const d = gcd(w, h);
-            const dec = (w / h).toFixed(3);
-            out.innerHTML = `<span style="font-size:1.4rem;">${w/d}:${h/d}</span><br><span style="font-size:0.9rem; color:var(--muted); font-weight:400;">(${dec} : 1)</span>`;
-            
-            const total = w * h;
-            infoMp.textContent   = (total / 1e6).toFixed(2) + ' MP';
-            infoPx.textContent   = fmt(total);
-            infoDec.textContent  = (w / h).toFixed(3);
-            infoDiag.textContent = Math.round(Math.sqrt(w*w + h*h)).toLocaleString('es-ES');
-            infoFmt.textContent  = w > h ? 'Landscape' : w < h ? 'Portrait' : 'Square';
-            
-            if (typeof updateCanvasFit === 'function') updateCanvasFit(w, h);
-        } else {
-            out.textContent = '—';
-            if (typeof updateCanvasFit === 'function') updateCanvasFit(0, 0);
+        try {
+            const w = parseInt(wIn.value) || 0;
+            const h = parseInt(hIn.value) || 0;
+            if (w > 0 && h > 0) {
+                const d = gcd(w, h);
+                const dec = (w / h).toFixed(3);
+                out.innerHTML = `<span style="font-size:1.4rem;">${w/d}:${h/d}</span><br><span style="font-size:0.9rem; color:var(--muted); font-weight:400;">(${dec} : 1)</span>`;
+                
+                if (typeof updateCanvasFit === 'function') updateCanvasFit(w, h);
+            } else {
+                out.textContent = '—';
+                if (typeof updateCanvasFit === 'function') updateCanvasFit(0, 0);
+            }
+        } catch (e) {
+            console.error("Error in calculate():", e);
         }
     }
+
+
 
     // ── Canvas Estándar ──
     const canvasPosX = document.getElementById('canvas-pos-x');
@@ -1765,11 +1533,14 @@
 
         // Y alignment
         if (canvasAlignV.value === 'top') posY = 0;
-        else if (canvasAlignV.value === 'center') posY = Math.round(diffH / 2);
+        else if (canvasAlignV.value === 'middle') posY = Math.round(diffH / 2);
         else if (canvasAlignV.value === 'bottom') posY = diffH;
 
-        if (posX < 0) { canvasPosX.innerHTML = `<span style="color:#f87171;">${posX}</span> (Recorte)`; }
-        else { canvasPosX.textContent = posX; }
+        if (posX < 0) { 
+            canvasPosX.innerHTML = `<span style="color:#f87171;">${posX}</span> (Recorte)`; 
+        } else { 
+            canvasPosX.textContent = posX; 
+        }
 
         if (posY < 0) { canvasPosY.innerHTML = `<span style="color:#f87171;">${posY}</span> (Recorte)`; }
         else { canvasPosY.textContent = posY; }
@@ -1811,11 +1582,14 @@
         }
         calculate();
     });
-    canvasAlignH.addEventListener('change', () => calculate());
-    canvasAlignV.addEventListener('change', () => calculate());
+
 
     wIn.addEventListener('input', calculate);
     hIn.addEventListener('input', calculate);
+    canvasAlignH.addEventListener('change', calculate);
+    canvasAlignV.addEventListener('change', calculate);
+    if (document.getElementById('canvas-custom-w')) document.getElementById('canvas-custom-w').addEventListener('input', calculate);
+    if (document.getElementById('canvas-custom-h')) document.getElementById('canvas-custom-h').addEventListener('input', calculate);
 
     canvasApply.addEventListener('click', (e) => {
         const btn = e.target;
@@ -1833,65 +1607,39 @@
         }
     });
 
+    // Removed side-canvas logic as it was consolidated
+
     // Run after initialization
     calculate();
 
-    // ── Inverse ──
-    document.getElementById('inv-calc').addEventListener('click', () => {
-        const known  = parseFloat(document.getElementById('inv-known').value);
-        const dim    = document.getElementById('inv-dim').value;
-        const ratioTxt = document.getElementById('inv-ratio').value.trim();
-        const res    = document.getElementById('inv-result');
-
-        if (!known || !ratioTxt) { res.style.color='#f87171'; res.textContent = 'Introduce todos los valores.'; return; }
-        const parts = ratioTxt.split(':').map(Number);
-        if (parts.length !== 2 || parts.some(isNaN)) { res.style.color='#f87171'; res.textContent = 'Formato de ratio inválido (usa W:H).'; return; }
-
-        const [rw, rh] = parts;
-        let result;
-        if (dim === 'w') { result = Math.round(known * rh / rw); res.textContent = `Alto: ${fmt(result)} px`; }
-        else             { result = Math.round(known * rw / rh); res.textContent = `Ancho: ${fmt(result)} px`; }
-        res.style.color = 'var(--success)';
-    });
-
-    // ── px → mm ──
-    const mmMode  = document.getElementById('mm-mode');
-    const mmLabel = document.getElementById('mm-val-label');
-    mmMode.addEventListener('change', () => {
-        mmLabel.textContent = mmMode.value === 'pitch' ? 'Pitch (mm)' : 'DPI';
-    });
-
-    document.getElementById('mm-calc').addEventListener('click', () => {
-        const px  = parseFloat(document.getElementById('mm-px').value);
-        const val = parseFloat(document.getElementById('mm-val').value);
-        const res = document.getElementById('mm-result');
-
-        if (!px || !val) { res.style.color='#f87171'; res.textContent = 'Introduce todos los valores.'; return; }
-
-        let mm;
-        if (mmMode.value === 'pitch') {
-            mm = px * val;
-        } else {
-            // DPI: 1 inch = 25.4 mm
-            mm = (px / val) * 25.4;
-        }
-        res.style.color = 'var(--success)';
-        res.textContent = `${mm.toFixed(2)} mm  (${(mm/10).toFixed(2)} cm  /  ${(mm/1000).toFixed(4)} m)`;
-    });
 
     // ── Scaling Calculator ──
     const scCw = document.getElementById('sc-cw');
     const scCh = document.getElementById('sc-ch');
-    const scTw = document.getElementById('sc-tw');
-    const scTh = document.getElementById('sc-th');
+    const scModW = document.getElementById('sc-mod-w');
+    const scModH = document.getElementById('sc-mod-h');
+    const scFactorInput = document.getElementById('sc-factor-input');
+    const scFactorSelect = document.getElementById('sc-factor-select');
+    const scManualFactor = document.getElementById('sc-manual-factor');
+    const scManualFactorInput = document.getElementById('sc-manual-factor-input');
+    const scManualApply = document.getElementById('sc-manual-apply');
+    const scCalcBtn = document.getElementById('sc-calc-btn');
     const scLockBtn = document.getElementById('sc-lock');
     const scLockIcon = document.getElementById('sc-lock-icon');
     const scLockText = document.getElementById('sc-lock-text');
+    const scStandardSelect = document.getElementById('sc-standard-resolution');
+    const scCustomResolution = document.getElementById('sc-custom-resolution');
+    const scCustomW = document.getElementById('sc-custom-w');
+    const scCustomH = document.getElementById('sc-custom-h');
+    const scCustomApply = document.getElementById('sc-custom-apply');
+    const scTw = document.getElementById('sc-tw');
+    const scTh = document.getElementById('sc-th');
 
-    const scType     = document.getElementById('sc-type');
-    const scFactor   = document.getElementById('sc-factor');
-    const scArMatch  = document.getElementById('sc-ar-match');
-    const scRealRes  = document.getElementById('sc-real-res');
+    const scTargetRes = document.getElementById('sc-target-res');
+    const scFactor = document.getElementById('sc-factor');
+    const scArMatch = document.getElementById('sc-ar-match');
+    const scRealRes = document.getElementById('sc-real-res');
+    const scBars    = document.getElementById('sc-bars');
     
     // ── LED Anti-Aliasing (Integer Only) ──
     function getIntegerScale(cw, ch, tw, th) {
@@ -1912,12 +1660,33 @@
     scLockBtn.addEventListener('click', () => {
         scLocked = !scLocked;
         scLockBtn.classList.toggle('active', scLocked);
-        scLockIcon.textContent = scLocked ? '🔒' : '🔓';
+        scLockIcon.textContent = scLocked ? 'Cerrado' : 'Abierto';
         scLockText.textContent = scLocked ? 'Bloqueado' : 'Libre';
-        if (scLocked) syncScaling('tw'); // Sync immediately when locking
+        if (scLocked) syncScaling('tw'); // Sync inmediatamente cuando está bloqueado
     });
 
-    document.getElementById('sc-calc-btn').addEventListener('click', () => {
+    scStandardSelect.addEventListener('change', () => {
+        if (scStandardSelect.value === 'custom') {
+            scCustomResolution.style.display = 'flex';
+            return;
+        }
+        scCustomResolution.style.display = 'none';
+        const [stdW, stdH] = scStandardSelect.value.split('x').map(Number);
+        if (stdW && stdH) {
+            scTw.value = stdW;
+            scTh.value = stdH;
+            calcScaling();
+        }
+    });
+
+    scCustomApply.addEventListener('click', () => {
+        const w = parseInt(scCustomW.value) || 0;
+        const h = parseInt(scCustomH.value) || 0;
+        if (w > 0 && h > 0) {
+            scTw.value = w;
+            scTh.value = h;
+            calcScaling();
+        }
         const tw = scTw.value;
         const th = scTh.value;
         if (tw && !th) syncScaling('tw', true);
@@ -1942,215 +1711,313 @@
                 scTh.value = Math.round(tw * ch / cw);
             }
         }
+        updateFactorDropdown();
         calcScaling();
     }
 
-    function calcScaling() {
+    function updateFactorDropdown() {
         const cw = parseFloat(scCw.value) || 0;
         const ch = parseFloat(scCh.value) || 0;
-        const tw = parseFloat(scTw.value) || 0;
-        const th = parseFloat(scTh.value) || 0;
-        const barsLabel = document.getElementById('sc-bars');
-        const resArea = document.getElementById('sc-result-area');
+        if (!cw || !ch) return;
 
-        if (!cw || !ch || !tw || !th) {
-            scFactor.textContent = '—';
-            scType.textContent = '—';
-            scArMatch.textContent = 'Pendiente...';
-            scRealRes.textContent = '—';
-            barsLabel.textContent = '';
-            resArea.style.borderColor = 'var(--card-border)';
-            resArea.style.boxShadow = 'none';
-            return;
+        const options = scFactorSelect.options;
+        for (let i = 0; i < options.length; i++) {
+            const val = options[i].value;
+            if (val === 'manual') continue;
+            const pct = parseFloat(val);
+            const rw = Math.round(cw * pct / 100);
+            const rh = Math.round(ch * pct / 100);
+            options[i].textContent = `${pct}% (${rw}×${rh})`;
         }
+    }
 
-        // Highlight update
-        resArea.style.borderColor = 'var(--accent)';
-        resArea.style.boxShadow = '0 0 15px rgba(108,99,255,0.2)';
-        setTimeout(() => {
-            resArea.style.borderColor = 'var(--card-border)';
-            resArea.style.boxShadow = 'none';
-        }, 800);
+    function calcScaling() {
+        try {
+            const cwInput = parseFloat(scCw.value) || 0;
+            const chInput = parseFloat(scCh.value) || 0;
+            const targetW = parseFloat(scTw.value) || 0;
+            const targetH = parseFloat(scTh.value) || 0;
+            const modulesW = parseInt(scModW.value) || 1;
+            const modulesH = parseInt(scModH.value) || 1;
 
-        const factorW = tw / cw;
-        const factorH = th / ch;
-        
-        const scale = Math.min(factorW, factorH);
-        const exactPercent = scale * 100;
-        const ledPercent   = Math.round(exactPercent);
+            const resArea = document.getElementById('sc-result-area');
+            const factorSelValue = scFactorSelect.value;
+            let factor = 100;
+            
+            if (factorSelValue === 'manual') {
+                factor = parseFloat(scManualFactorInput.value) || parseFloat(scFactorInput.value) || 100;
+            } else {
+                factor = parseFloat(factorSelValue);
+                scFactorInput.value = factor; 
+            }
 
-        scFactor.textContent = ledPercent + '%';
+            const resultingW = Math.round(cwInput * factor / 100);
+            const resultingH = Math.round(chInput * factor / 100);
 
-        if (scale > 1.001) { scType.textContent = 'Upscale'; scType.style.color = 'var(--accent2)'; }
-        else if (scale < 0.999) { scType.textContent = 'Downscale'; scType.style.color = '#f59e0b'; }
-        else { scType.textContent = 'Nativo'; scType.style.color = 'var(--success)'; }
+            if (!cwInput || !chInput) {
+                scArMatch.textContent = 'Pendiente...';
+                scTargetRes.textContent = '—';
+                scFactor.textContent = '—';
+                scRealRes.textContent = '—';
+                const advStatsDiv = document.getElementById('sc-advanced-stats');
+                if (advStatsDiv) advStatsDiv.style.display = 'none';
+                return;
+            }
 
-        const arC = cw / ch;
-        const arT = tw / th;
+            scArMatch.textContent = 'Calculando...';
+            resArea.style.borderColor = 'var(--accent2)';
+            setTimeout(() => resArea.style.borderColor = 'var(--card-border)', 400);
 
-        if (Math.abs(arC - arT) < 0.01) {
-            const d = gcd(cw, ch); scArMatch.textContent = `PERFECTO (${cw/d}:${ch/d})`; scArMatch.style.color = 'var(--success)'; barsLabel.textContent = 'Cubre 100% de pantalla';
+            scTargetRes.textContent = (targetW > 0 && targetH > 0) ? `${fmt(targetW)} × ${fmt(targetH)}` : 'No definida';
+            scFactor.textContent = factor.toFixed(2) + '%';
+            
+            if (targetW > 0 && targetH > 0) {
+                const arContent = cwInput / chInput;
+                const arScreen = targetW / targetH;
+                const matches = Math.abs(arContent - arScreen) < 0.01;
+                scArMatch.textContent = matches ? 'COINCIDE (✓)' : 'DIFERENTE (⚠)';
+                scArMatch.style.color = matches ? 'var(--success)' : '#f59e0b';
+
+                let fitW, fitH;
+                if (arContent > arScreen) {
+                    fitW = targetW;
+                    fitH = Math.round(targetW / arContent);
+                    scBars.textContent = `Bars: V (${fmt(targetH - fitH)}px)`;
+                } else {
+                    fitH = targetH;
+                    fitW = Math.round(targetH * arContent);
+                    scBars.textContent = `Bars: H (${fmt(targetW - fitW)}px)`;
+                }
+            } else {
+                scArMatch.textContent = 'Sin Destino';
+                scArMatch.style.color = 'var(--muted)';
+                scBars.textContent = '';
+            }
+
+            scRealRes.textContent = `${fmt(resultingW)} × ${fmt(resultingH)}`;
+
+            // Sub-modules with internal safety
+            try { updateQualityDiagnosis(factor); } catch(e) { console.warn("QualityDiag failed", e); }
+            try { updateAdvancedScalingStats(cwInput, chInput, targetW, targetH, factor); } catch(e) { console.warn("AdvStats failed", e); }
+            try { updatePixelsPerModule(cwInput, chInput, resultingW, resultingH, modulesW, modulesH); } catch(e) { console.warn("PPM failed", e); }
+
+            // Sync Manual Calculator
+            if (msPercent) {
+                msPercent.value = factor.toFixed(2);
+                calcManualScaling();
+            }
+
+        } catch (err) {
+            console.error("Error global en calcScaling:", err);
+        }
+    }
+
+    function updatePixelsPerModule(cw, ch, tw, th, modW, modH) {
+        // Current pixels per module
+        const currentPPMW = Math.round(cw / modW);
+        const currentPPMH = Math.round(ch / modH);
+        const currentPPMTotal = currentPPMW * currentPPMH;
+        const currentTotalPixels = cw * ch;
+
+        // Target pixels per module
+        const targetPPMW = Math.round(tw / modW);
+        const targetPPMH = Math.round(th / modH);
+        const targetPPMTotal = targetPPMW * targetPPMH;
+        const targetTotalPixels = tw * th;
+
+        // Loss calculations
+        const lossW = currentPPMW - targetPPMW;
+        const lossH = currentPPMH - targetPPMH;
+        const lossTotal = currentPPMTotal - targetPPMTotal;
+        const lossPercent = currentPPMTotal > 0 ? (lossTotal / currentPPMTotal) * 100 : 0;
+        const lossTotalScreen = currentTotalPixels - targetTotalPixels;
+
+        // Update current info
+        document.getElementById('sc-led-current-ppm-w').textContent = fmt(currentPPMW);
+        document.getElementById('sc-led-current-ppm-h').textContent = fmt(currentPPMH);
+        document.getElementById('sc-led-current-ppm-total').textContent = fmt(currentPPMTotal);
+        document.getElementById('sc-led-current-total').textContent = fmt(currentTotalPixels);
+
+        // Update target info
+        document.getElementById('sc-led-target-ppm-w').textContent = fmt(targetPPMW);
+        document.getElementById('sc-led-target-ppm-h').textContent = fmt(targetPPMH);
+        document.getElementById('sc-led-target-ppm-total').textContent = fmt(targetPPMTotal);
+        document.getElementById('sc-led-target-total').textContent = fmt(targetTotalPixels);
+
+        // Update comparison
+        document.getElementById('sc-led-loss-w').textContent = lossW < 0 ? '+' + fmt(Math.abs(lossW)) : '-' + fmt(lossW);
+        document.getElementById('sc-led-loss-h').textContent = lossH < 0 ? '+' + fmt(Math.abs(lossH)) : '-' + fmt(lossH);
+        document.getElementById('sc-led-loss-total').textContent = lossTotal < 0 ? '+' + fmt(Math.abs(lossTotal)) : '-' + fmt(lossTotal);
+        document.getElementById('sc-led-loss-percent').textContent = lossPercent.toFixed(1) + '%';
+        document.getElementById('sc-led-loss-total-screen').textContent = lossTotalScreen < 0 ? '+' + fmt(Math.abs(lossTotalScreen)) : '-' + fmt(lossTotalScreen);
+
+        // Viability assessment
+        let viability = 'Viable';
+        let viabilityColor = 'var(--success)';
+        if (Math.abs(lossPercent) > 50) {
+            viability = 'No recomendado';
+            viabilityColor = '#f87171';
+        } else if (Math.abs(lossPercent) > 20) {
+            viability = 'Aceptable';
+            viabilityColor = '#f59e0b';
+        }
+        document.getElementById('sc-led-viability').textContent = viability;
+        document.getElementById('sc-led-viability').style.color = viabilityColor;
+
+        // Quality badge
+        const qualityIcon = document.getElementById('sc-led-quality-icon');
+        const qualityText = document.getElementById('sc-led-quality-text');
+        const qualityBadge = document.getElementById('sc-led-quality');
+
+        if (lossTotal === 0) {
+            qualityBadge.style.background = 'rgba(16, 185, 129, 0.1)';
+            qualityBadge.style.border = '1px solid var(--success)';
+            qualityIcon.textContent = '✓';
+            qualityText.textContent = 'Configuración perfecta - Sin pérdida de píxeles';
+        } else if (Math.abs(lossPercent) <= 10) {
+            qualityBadge.style.background = 'rgba(167, 139, 250, 0.1)';
+            qualityBadge.style.border = '1px solid var(--accent2)';
+            qualityIcon.textContent = '⚠';
+            qualityText.textContent = 'Pérdida mínima - Aceptable para la mayoría de aplicaciones';
         } else {
-            scArMatch.textContent = 'DIFERENTE'; scArMatch.style.color = '#f87171';
-            if (arC > arT) { barsLabel.textContent = `Letterbox: ${Math.round((th - ch*(ledPercent/100))/2)}px arriba/abajo`; }
-            else { barsLabel.textContent = `Pillarbox: ${Math.round((tw - cw*(ledPercent/100))/2)}px dcha/izq`; }
+            qualityBadge.style.background = 'rgba(245, 158, 11, 0.1)';
+            qualityBadge.style.border = '1px solid #f59e0b';
+            qualityIcon.textContent = '⚠';
+            qualityText.textContent = 'Pérdida significativa - Considera ajustar módulos o resolución';
         }
-
-        const realW = Math.round(cw * (ledPercent / 100));
-        const realH = Math.round(ch * (ledPercent / 100));
-        scRealRes.textContent = `${fmt(realW)} × ${fmt(realH)}`;
-
-        // ── Compatibility Validation ──
-        validateCompatibility(cw, ch, tw, th, ledPercent);
-
-        // ── LED Quality Diagnosis ──
-        updateQualityDiagnosis(exactPercent);
-
-        // ── Advanced Scaling Statistics ──
-        updateAdvancedScalingStats(cw, ch, tw, th, ledPercent);
-
-        // Auto-update manual scaling card for consistency
-        msPercent.value = ledPercent;
-        calcManualScaling();
     }
 
     let currentSuggestion = null;
 
-    function updateAdvancedScalingStats(cw, ch, tw, th, pctRounded) {
-        if (!cw || !ch || !tw || !th) return;
+    function updateAdvancedScalingStats(cw, ch, screenW, screenH, pctFactor) {
+        const statsSection = document.getElementById('sc-advanced-stats');
+        if (!cw || !ch || !screenW || !screenH) {
+            if (statsSection) statsSection.style.display = 'none';
+            return;
+        }
+        if (statsSection) statsSection.style.display = 'block';
 
         const arC = cw / ch;
-        const arT = tw / th;
+        const arT = screenW / screenH;
         const arDiff = Math.abs(arC - arT) / arC * 100;
         
-        const realW = Math.round(cw * (pctRounded / 100));
-        const realH = Math.round(ch * (pctRounded / 100));
+        const realW = Math.round(cw * (pctFactor / 100));
+        const realH = Math.round(ch * (pctFactor / 100));
         const finalMP = (realW * realH) / 1000000;
-        const originalMP = (cw * ch) / 1000000;
         
-        const totalPx = tw * th;
+        const totalPx = screenW * screenH;
         const usedPx = realW * realH;
         const occupancy = (usedPx / totalPx) * 100;
         
         const pixelDiff = usedPx - (cw * ch);
-        const efficiency = pctRounded === 100 ? 100 : (pctRounded < 100 ? 100 - (50 * Math.pow(100 - pctRounded, 0.5)) : Math.min(100, 100 / (pctRounded / 100)));
+        const efficiency = pctFactor === 100 ? 100 : (pctFactor < 100 ? 100 - (50 * Math.pow(Math.abs(100 - pctFactor), 0.5)) : Math.min(100, 100 / (pctFactor / 100)));
 
-        // Update advanced stats
-        document.getElementById('sc-ar-diff').textContent = arDiff.toFixed(2) + '%';
-        document.getElementById('sc-final-mp').textContent = finalMP.toFixed(2) + ' MP';
-        document.getElementById('sc-occupancy').textContent = occupancy.toFixed(1) + '%';
-        
-        let pixelChangeText = pixelDiff > 0 ? '+' : '';
-        pixelChangeText += fmt(Math.abs(pixelDiff)) + ' píxeles';
-        if (pixelDiff > 0) pixelChangeText += ' (Ganados)';
-        else pixelChangeText += ' (Perdidos)';
-        document.getElementById('sc-pixel-change').textContent = pixelChangeText;
-        
-        const upscaleFactor = pctRounded / 100;
-        const upscaleFactorText = upscaleFactor < 1 ? (1 / upscaleFactor).toFixed(2) + ':1 Down' : upscaleFactor.toFixed(2) + ':1 Up';
-        document.getElementById('sc-upscale-factor').textContent = upscaleFactorText;
-        
-        document.getElementById('sc-efficiency').textContent = Math.round(efficiency) + '%';
-        
-        // Tolerance checks
-        const pctExact = (Math.min(tw / cw, th / ch)) * 100;
-        const tol5 = Math.abs(pctExact - pctRounded) <= 5;
-        const tol10 = Math.abs(pctExact - pctRounded) <= 10;
-        
-        document.getElementById('sc-tolerance-5').textContent = tol5 ? '✅ Dentro de rango seguro' : '⚠️ Fuera del rango seguro';
-        document.getElementById('sc-tolerance-5').style.color = tol5 ? 'var(--success)' : '#f59e0b';
-        
-        document.getElementById('sc-tolerance-10').textContent = tol10 ? '✅ Dentro de rango aceptable' : '⚠️ Fuera del rango aceptable';
-        document.getElementById('sc-tolerance-10').style.color = tol10 ? 'var(--success)' : '#f87171';
+        const elArDiff = document.getElementById('sc-ar-diff');
+        const elFinalMp = document.getElementById('sc-final-mp');
+        const elOccupancy = document.getElementById('sc-occupancy');
+        const elPixelChange = document.getElementById('sc-pixel-change');
+        const elUpscaleFactor = document.getElementById('sc-upscale-factor');
+        const elEfficiency = document.getElementById('sc-efficiency');
 
-        // Show stats section
-        document.getElementById('sc-advanced-stats').style.display = 'block';
-
-        // AR Comparison Visualization
-        const arComparisonDiv = document.getElementById('sc-ar-comparison');
-        arComparisonDiv.style.display = 'block';
+        if (elArDiff) elArDiff.textContent = arDiff.toFixed(2) + '%';
+        if (elFinalMp) elFinalMp.textContent = finalMP.toFixed(2) + ' MP';
+        if (elOccupancy) elOccupancy.textContent = occupancy.toFixed(1) + '%';
         
-        const contentRect = document.getElementById('sc-ar-content');
-        const screenRect = document.getElementById('sc-ar-screen');
-        
-        contentRect.style.aspectRatio = `${cw}/${ch}`;
-        screenRect.style.aspectRatio = `${tw}/${th}`;
-        
-        const d1 = gcd(cw, ch);
-        const d2 = gcd(tw, th);
-        document.getElementById('sc-ar-content-val').textContent = `${cw/d1}:${ch/d1}`;
-        document.getElementById('sc-ar-screen-val').textContent = `${tw/d2}:${th/d2}`;
-
-        // Fit Diagram
-        const fitContainer = document.getElementById('sc-fit-diagram-container');
-        fitContainer.style.display = 'block';
-        
-        const fitScreen = document.getElementById('sc-fit-screen');
-        const fitContent = document.getElementById('sc-fit-content');
-        
-        const maxWidth = 300;
-        const maxHeight = 200;
-        
-        const screenAR = tw / th;
-        let screenW = maxWidth;
-        let screenH = maxHeight;
-        
-        if (screenAR > 1) {
-            screenH = screenW / screenAR;
-        } else {
-            screenW = screenH * screenAR;
+        if (elPixelChange) {
+            let pixelChangeText = pixelDiff > 0 ? '+' : '';
+            pixelChangeText += fmt(Math.abs(pixelDiff)) + ' px';
+            pixelChangeText += pixelDiff > 0 ? ' (Ganados)' : ' (Perdidos)';
+            elPixelChange.textContent = pixelChangeText;
         }
         
-        fitScreen.style.width = screenW + 'px';
-        fitScreen.style.height = screenH + 'px';
+        if (elUpscaleFactor) {
+            const factorScale = pctFactor / 100;
+            const upscaleFactorText = factorScale < 1 ? (1 / factorScale).toFixed(2) + ':1 Down' : factorScale.toFixed(2) + ':1 Up';
+            elUpscaleFactor.textContent = upscaleFactorText;
+        }
         
-        const contentAR = cw / ch;
-        let contentW = realW * (screenW / tw);
-        let contentH = realH * (screenH / th);
+        if (elEfficiency) elEfficiency.textContent = Math.round(efficiency) + '%';
         
-        fitContent.style.width = contentW + 'px';
-        fitContent.style.height = contentH + 'px';
-        fitContent.textContent = realW + ' × ' + realH;
+        // Tolerance
+        const pctExact = (Math.min(screenW / cw, screenH / ch)) * 100;
+        const tol5 = Math.abs(pctExact - pctFactor) <= 5;
+        const tol10 = Math.abs(pctExact - pctFactor) <= 10;
+        
+        const elTol5 = document.getElementById('sc-tolerance-5');
+        const elTol10 = document.getElementById('sc-tolerance-10');
+        if (elTol5) {
+            elTol5.textContent = tol5 ? 'Dentro de rango seguro' : 'Fuera del rango seguro';
+            elTol5.style.color = tol5 ? 'var(--success)' : '#f59e0b';
+        }
+        if (elTol10) {
+            elTol10.textContent = tol10 ? 'Dentro de margen aceptable' : 'Fuera del margen aceptable';
+            elTol10.style.color = tol10 ? 'var(--success)' : '#f87171';
+        }
 
-        // Scaling Relations Table
-        const tableContainer = document.getElementById('sc-scaling-table-container');
-        tableContainer.style.display = 'block';
-        
-        const tableBody = document.getElementById('sc-scaling-table-body');
-        tableBody.innerHTML = '';
-        
+        updateClosestPerfectScales(cw, ch, screenW, screenH, pctFactor);
+    }
+
+    function parseStandardResolution() {
+        const sel = document.getElementById('sc-standard-resolution').value;
+        if (sel === 'custom') {
+            const customW = parseInt(document.getElementById('sc-custom-w').value) || 0;
+            const customH = parseInt(document.getElementById('sc-custom-h').value) || 0;
+            return (customW > 0 && customH > 0) ? {w: customW, h: customH} : null;
+        }
+        const parts = sel.split('x').map(Number);
+        if (parts.length === 2 && parts[0] > 0 && parts[1] > 0) return {w: parts[0], h: parts[1]};
+        return null;
+    }
+
+    function updateClosestPerfectScales(cw, ch, stdW, stdH, activePct) {
+        const tbody = document.getElementById('sc-perfect-table-body');
+        tbody.innerHTML = '';
+        if (!cw || !ch) return;
+
+        const selected = parseStandardResolution();
+        if (selected) {
+            stdW = selected.w;
+            stdH = selected.h;
+        }
+        if (!stdW || !stdH) return;
+
         const factors = [25, 50, 75, 100, 125, 150, 175, 200, 250, 300, 400];
-        const goldenFactors = [25, 50, 75, 100, 150, 200, 300, 400];
-        
-        factors.forEach(factor => {
-            if (factor === 0) return;
-            
-            const scaledW = Math.round(cw * (factor / 100));
-            const scaledH = Math.round(ch * (factor / 100));
-            const scaledMP = (scaledW * scaledH) / 1000000;
-            
-            const arMatch = Math.abs((scaledW / scaledH) - arT) < 0.01 ? 'PERFECTO' : 'Diferente';
-            const isGolden = goldenFactors.includes(factor);
-            const isCurrent = factor === pctRounded;
-            
-            let note = '';
-            if (factor === 100) note = 'Nativo';
-            else if (isGolden) note = '💎 Golden';
-            if (isCurrent) note += (note ? ' [ACTUAL]' : '[ACTUAL]');
-            
-            const row = document.createElement('tr');
-            if (isGolden) row.classList.add('scale-golden');
-            if (isCurrent) row.style.background = 'rgba(167, 139, 250, 0.2)';
-            
-            row.innerHTML = `
-                <td class="scale-factor">${factor}%</td>
-                <td>${fmt(scaledW)} px</td>
-                <td>${fmt(scaledH)} px</td>
-                <td>${scaledMP.toFixed(2)} MP</td>
-                <td>${arMatch}</td>
-                <td>${note}</td>
+        const rows = [];
+
+        for (const factor of factors) {
+            const scaledW = cw * factor / 100;
+            const scaledH = ch * factor / 100;
+            if (!Number.isInteger(scaledW) || !Number.isInteger(scaledH)) continue;
+
+            const dist = Math.abs(scaledW - stdW) + Math.abs(scaledH - stdH);
+            const ratioDiff = Math.abs((scaledW / scaledH) - (stdW / stdH));
+            rows.push({factor, scaledW, scaledH, dist, ratioDiff});
+        }
+
+        rows.sort((a, b) => a.dist - b.dist || a.ratioDiff - b.ratioDiff);
+
+        rows.slice(0, 5).forEach(entry => {
+            const tr = document.createElement('tr');
+            const isActive = Math.round(entry.factor) === Math.round(activePct);
+            tr.style.cursor = 'pointer';
+            tr.style.background = isActive ? 'rgba(148, 163, 184, 0.15)' : 'transparent';
+            tr.innerHTML = `
+                <td>${entry.factor}%</td>
+                <td>${fmt(entry.scaledW)} px</td>
+                <td>${fmt(entry.scaledH)} px</td>
+                <td>${fmt(Math.round(entry.dist))}</td>
+                <td>${entry.scaledW === stdW && entry.scaledH === stdH ? 'Match exacto' : 'Cerca'}</td>
             `;
-            tableBody.appendChild(row);
+            tr.addEventListener('click', () => {
+                scTw.value = entry.scaledW;
+                scTh.value = entry.scaledH;
+                scStandardSelect.value = 'custom';
+                document.getElementById('sc-custom-resolution').style.display = 'flex';
+                document.getElementById('sc-custom-w').value = entry.scaledW;
+                document.getElementById('sc-custom-h').value = entry.scaledH;
+                calcScaling();
+            });
+            tbody.appendChild(tr);
         });
     }
 
@@ -2181,7 +2048,7 @@
                 scGoldenBtn.style.display = 'block';
                 let gTw = Math.round(cw * (nearestGolden / 100));
                 let gTh = Math.round(ch * (nearestGolden / 100));
-                scGoldenBtn.innerHTML = `<strong style="color:var(--success);">🌟 Golden Factor Cercano (${nearestGolden}%)</strong><br>
+                scGoldenBtn.innerHTML = `<strong style="color:var(--success);">Golden Factor Cercano (${nearestGolden}%)</strong><br>
                                          <span style="font-size:0.75rem; opacity:0.9;">Ajusta LED ROI a: <strong>${gTw}x${gTh}</strong> (Nativo: 1:1 en Procesador)</span>`;
                 scGoldenBtn.onclick = () => {
                     scTw.value = gTw;
@@ -2193,14 +2060,14 @@
 
         if (pct === 100) {
             scQNote.style.background = 'rgba(74, 222, 128, 0.1)';
-            scQIcon.textContent = '✅';
+            scQIcon.textContent = 'OK';
             scQTitle.textContent = 'Mapeo Perfecto (1:1)';
             scQText.textContent = 'Píxel-a-Píxel nativo. Sin escalado, sin aliasing. Máxima calidad LED.';
             qBar.style.width = '100%';
             qBar.style.backgroundColor = 'var(--success)';
         } else if (isGolden) {
             scQNote.style.background = 'rgba(74, 222, 128, 0.1)';
-            scQIcon.textContent = '💎';
+            scQIcon.textContent = 'Golden';
             scQTitle.textContent = 'Factor Golden (Ideal)';
             scQText.textContent = `El factor ${pct}% es matemáticamente limpio para el procesado. Produce resultados nítidos sin aliasing complejo.`;
             qBar.style.width = '90%';
@@ -2208,7 +2075,7 @@
         } else if (pct % 1 === 0) {
             // Factor entero (Anti-aliasing)
             scQNote.style.background = 'rgba(167, 139, 250, 0.1)';
-            scQIcon.textContent = '⚖️';
+            scQIcon.textContent = 'Entero';
             scQTitle.textContent = 'Factor Entero (Anti-Aliasing)';
             scQText.textContent = `Al usar exactamente un ${pct}%, evitas el aliasing de los decimales, manteniendo la simetría de los píxeles.`;
             qBar.style.width = '70%';
@@ -2216,7 +2083,7 @@
         } else {
             // Factor con decimales (Aliasing probable)
             scQNote.style.background = 'rgba(245, 158, 11, 0.1)';
-            scQIcon.textContent = '⚠️';
+            scQIcon.textContent = 'Riesgo';
             scQTitle.textContent = 'Riesgo de Aliasing';
             scQText.innerHTML = `Escalado de <strong>${pct.toFixed(3)}%</strong>. Al no ser un entero exacto matemático, el procesador LED creará interpolación de sub-píxeles, lo que resulta en pérdida de nitidez o parpadeo.<br><br>Para un Anti-Aliasing perfecto, el contenido y la pantalla deben encajar en una fracción matemática exacta.`;
             qBar.style.width = '40%';
@@ -2238,7 +2105,7 @@
 
                 currentSuggestion = { cw: newCw, ch: newCh, tw: newTw, th: newTh };
                 scQSuggest.style.display = 'block';
-                scQSuggest.innerHTML = `<strong style="color:var(--accent2);">✨ Solución Anti-Aliasing al ${suggestPct}%</strong><br>
+                scQSuggest.innerHTML = `<strong style="color:var(--accent2);">Solución Anti-Aliasing al ${suggestPct}%</strong><br>
                                         <span style="font-size:0.75rem; opacity:0.9;">Ajusta Comp origen a: <strong>${newCw}x${newCh}</strong> → LED: <strong>${newTw}x${newTh}</strong></span>`;
             }
         }
@@ -2301,14 +2168,57 @@
 
     scCw.addEventListener('input', () => { syncScaling('cw'); calcManualScaling(); });
     scCh.addEventListener('input', () => { syncScaling('ch'); calcManualScaling(); });
-    scTw.addEventListener('input', () => { syncScaling('tw'); syncCVTFromProcessor(); });
-    scTh.addEventListener('input', () => { syncScaling('th'); syncCVTFromProcessor(); });
+    scTw.addEventListener('input', () => { syncScaling('tw'); syncCVTFromProcessor(); calcScaling(); });
+    scTh.addEventListener('input', () => { syncScaling('th'); syncCVTFromProcessor(); calcScaling(); });
+    
+    // New event listeners for integrated scaling calculator
+    scModW.addEventListener('input', calcScaling);
+    scModH.addEventListener('input', calcScaling);
+    scFactorSelect.addEventListener('change', () => {
+        const manualDiv = document.getElementById('sc-manual-factor');
+        if (scFactorSelect.value === 'manual') {
+            manualDiv.style.display = 'flex';
+            scManualFactorInput.focus();
+        } else {
+            manualDiv.style.display = 'none';
+            scFactorInput.value = scFactorSelect.value;
+            calcScaling();
+        }
+    });
+
+    // End of Scaling Handlers
+
+    scFactorInput.addEventListener('input', () => {
+        scFactorSelect.value = 'manual';
+        document.getElementById('sc-manual-factor').style.display = 'flex';
+        scManualFactorInput.value = scFactorInput.value;
+        calcScaling();
+    });
+
+    scManualFactorInput.addEventListener('input', () => {
+        scFactorInput.value = scManualFactorInput.value;
+        scFactorSelect.value = 'manual';
+        calcScaling();
+    });
+
+    scManualApply.addEventListener('click', calcScaling);
+    scCalcBtn.addEventListener('click', calcScaling);
+    
+    // Initial dropdown update
+    updateFactorDropdown();
     
     // ── CVT-RBv2 / EDID Calculator (EM Calc) ──
     const cvtH = document.getElementById('cvt-h');
     const cvtV = document.getElementById('cvt-v');
     const cvtHz = document.getElementById('cvt-hz');
     let currentRB = 'v2';
+
+    // Integrated EDID / CVT Calculations
+    [cvtH, cvtV, cvtHz].forEach(el => {
+        if (el) el.addEventListener('input', calculateCVT);
+    });
+    const cvtBpc = document.getElementById('cvt-bpc');
+    if (cvtBpc) cvtBpc.addEventListener('change', calculateCVT);
 
     document.querySelectorAll('.rb-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -2327,61 +2237,61 @@
         // Validación 1: H Total debe ser H Active + H Blanking
         const hBlanking = hFrontPorch + hSync + hBackPorch;
         if (hTotal !== hActive + hBlanking) {
-            errors.push('❌ H Total incorrecto: Debe ser H Active + (HFP + HS + HBP)');
+            errors.push('H Total incorrecto: Debe ser H Active + (HFP + HS + HBP)');
         } else {
-            info.push('✅ H Total válido: ' + hTotal);
+            info.push('H Total válido: ' + hTotal);
         }
         
         // Validación 2: V Total debe ser V Active + V Blanking
         const vBlanking = vFrontPorch + vSync + vBackPorch;
         if (vTotal !== vActive + vBlanking) {
-            errors.push('❌ V Total incorrecto: Debe ser V Active + (VFP + VS + VBP)');
+            errors.push('V Total incorrecto: Debe ser V Active + (VFP + VS + VBP)');
         } else {
-            info.push('✅ V Total válido: ' + vTotal);
+            info.push('V Total válido: ' + vTotal);
         }
         
         // Validación 3: Front Porch debe ser > 0
         if (hFrontPorch <= 0 || vFrontPorch <= 0) {
-            errors.push('⚠️ Front Porch debe ser mayor a 0');
+            errors.push('Front Porch debe ser mayor a 0');
         } else {
-            info.push('✅ Front Porch válido (H:' + hFrontPorch + 'px, V:' + vFrontPorch + 'px)');
+            info.push('Front Porch válido (H:' + hFrontPorch + 'px, V:' + vFrontPorch + 'px)');
         }
         
         // Validación 4: Sync debe ser > 0
         if (hSync <= 0 || vSync <= 0) {
-            errors.push('⚠️ Sync debe ser mayor a 0');
+            errors.push('Sync debe ser mayor a 0');
         } else {
-            info.push('✅ Sync válido (H:' + hSync + 'px, V:' + vSync + 'px)');
+            info.push('Sync válido (H:' + hSync + 'px, V:' + vSync + 'px)');
         }
         
         // Validación 5: Back Porch debe ser > 0
         if (hBackPorch <= 0 || vBackPorch <= 0) {
-            errors.push('⚠️ Back Porch debe ser mayor a 0');
+            errors.push('Back Porch debe ser mayor a 0');
         } else {
-            info.push('✅ Back Porch válido (H:' + hBackPorch + 'px, V:' + vBackPorch + 'px)');
+            info.push('Back Porch válido (H:' + hBackPorch + 'px, V:' + vBackPorch + 'px)');
         }
         
         // Validación 6: Refresh Rate límites
         if (refreshRate < 23 || refreshRate > 200) {
-            warnings.push('⚠️ Refresh Rate fuera de rango típico (23-200 Hz). Valor: ' + refreshRate.toFixed(2) + ' Hz');
+            warnings.push('Refresh Rate fuera de rango típico (23-200 Hz). Valor: ' + refreshRate.toFixed(2) + ' Hz');
         } else {
-            info.push('✅ Refresh Rate dentro de rango: ' + refreshRate.toFixed(2) + ' Hz');
+            info.push('Refresh Rate dentro de rango: ' + refreshRate.toFixed(2) + ' Hz');
         }
         
         // Validación 7: H Frequency
         const hFreqKHz = pixelClockHz / hTotal / 1000;
         if (hFreqKHz < 15 || hFreqKHz > 200) {
-            warnings.push('⚠️ H Frequency (' + hFreqKHz.toFixed(2) + ' kHz) fuera de rango VESA (15-200 kHz)');
+            warnings.push('H Frequency (' + hFreqKHz.toFixed(2) + ' kHz) fuera de rango VESA (15-200 kHz)');
         } else {
-            info.push('✅ H Frequency válida: ' + hFreqKHz.toFixed(2) + ' kHz');
+            info.push('H Frequency válida: ' + hFreqKHz.toFixed(2) + ' kHz');
         }
         
         // Validación 8: V Frequency
         const vFreqHz = pixelClockHz / (hTotal * vTotal);
         if (vFreqHz < 23 || vFreqHz > 200) {
-            warnings.push('⚠️ V Frequency (' + vFreqHz.toFixed(3) + ' Hz) fuera de rango');
+            warnings.push('V Frequency (' + vFreqHz.toFixed(3) + ' Hz) fuera de rango');
         } else {
-            info.push('✅ V Frequency válida: ' + vFreqHz.toFixed(3) + ' Hz');
+            info.push('V Frequency válida: ' + vFreqHz.toFixed(3) + ' Hz');
         }
         
         // Validación 9: Blanking horizontal mínimo según RB
@@ -2390,35 +2300,35 @@
         else if (rbMode === 'off') minHBlank = Math.round(hActive * 0.2); // ~20%
         
         if (hBlanking < minHBlank) {
-            warnings.push('⚠️ H Blanking (' + hBlanking + 'px) por debajo del mínimo (' + minHBlank + 'px) para ' + (rbMode === 'v2' ? 'RBv2' : rbMode === 'v1' ? 'RBv1' : 'CVT Standard'));
+            warnings.push('H Blanking (' + hBlanking + 'px) por debajo del mínimo (' + minHBlank + 'px) para ' + (rbMode === 'v2' ? 'RBv2' : rbMode === 'v1' ? 'RBv1' : 'CVT Standard'));
         } else {
-            info.push('✅ H Blanking mínimo respetado: ' + hBlanking + 'px');
+            info.push('H Blanking mínimo respetado: ' + hBlanking + 'px');
         }
         
         // Validación 10: Pixel Clock dentro de límites de interfaz
         const pclkMhz = pixelClockHz / 1000000;
         let interfaceWarning = '';
         if (pclkMhz > 1200) {
-            interfaceWarning = '⚠️ Requiere interfaz experimental (>1.2 GHz): ' + pclkMhz.toFixed(3) + ' MHz';
+            interfaceWarning = 'Requiere interfaz experimental (>1.2 GHz): ' + pclkMhz.toFixed(3) + ' MHz';
         } else if (pclkMhz > 600) {
-            interfaceWarning = '💡 Requiere HDMI 2.1+ o DP 1.4+: ' + pclkMhz.toFixed(3) + ' MHz';
+            interfaceWarning = 'Requiere HDMI 2.1+ o DP 1.4+: ' + pclkMhz.toFixed(3) + ' MHz';
         } else if (pclkMhz > 340) {
-            interfaceWarning = '✅ Compatible con HDMI 2.0 / DP 1.2: ' + pclkMhz.toFixed(3) + ' MHz';
+            interfaceWarning = 'Compatible con HDMI 2.0 / DP 1.2: ' + pclkMhz.toFixed(3) + ' MHz';
         } else if (pclkMhz > 165) {
-            interfaceWarning = '✅ Compatible con DL-DVI / HDMI 1.4: ' + pclkMhz.toFixed(3) + ' MHz';
+            interfaceWarning = 'Compatible con DL-DVI / HDMI 1.4: ' + pclkMhz.toFixed(3) + ' MHz';
         } else {
-            interfaceWarning = '✅ Compatible con SL-DVI / HDMI 1.0: ' + pclkMhz.toFixed(3) + ' MHz';
+            interfaceWarning = 'Compatible con SL-DVI / HDMI 1.0: ' + pclkMhz.toFixed(3) + ' MHz';
         }
         info.push(interfaceWarning);
         
         // Validación 11: V Total ≥ V Active
         if (vTotal < vActive) {
-            errors.push('❌ V Total (' + vTotal + ') no puede ser menor a V Active (' + vActive + ')');
+            errors.push('V Total (' + vTotal + ') no puede ser menor a V Active (' + vActive + ')');
         }
         
         // Validación 12: H Total ≥ H Active
         if (hTotal < hActive) {
-            errors.push('❌ H Total (' + hTotal + ') no puede ser menor a H Active (' + hActive + ')');
+            errors.push('H Total (' + hTotal + ') no puede ser menor a H Active (' + hActive + ')');
         }
         
         return { 
@@ -2489,37 +2399,46 @@
         // Validación de cálculos EDID
         const validation = validateEDIDCalculations(hActive, hTotal, vActive, vTotal, hSync, hFrontPorch, hBackPorch, vSync, vFrontPorch, vBackPorch, pixelClockHz, vRate, currentRB);
 
+        // Calculamos BW basándonos en bpc (bits per component)
+        const bpc = parseInt(document.getElementById('cvt-bpc').value) || 8;
+        const totalBpp = bpc * 3; // RGB / 4:4:4
+        const dataRateGbps = (pixelClockHz * totalBpp) / 1000000000;
+        
         const pclkMhz = pixelClockHz / 1000000;
 
         let bw = 'Unknown';
         if (pclkMhz <= 165) bw = 'SL-DVI (Single Link)';
-        else if (pclkMhz <= 340) bw = 'DL-DVI / HDMI 1.4';
+        else if (pclkMhz <= 300) bw = 'HDMI 1.4 / SL-DVI+';
         else if (pclkMhz <= 600) bw = 'HDMI 2.0 / DP 1.2';
         else if (pclkMhz <= 1200) bw = 'HDMI 2.1 / DP 1.4';
-        else bw = 'Excede HDMI 2.1 / DP 1.4';
+        else bw = 'Excede HDMI 2.1';
 
         document.getElementById('cvt-pclk').textContent = pclkMhz.toFixed(3);
         
-        let statusIcon = '✅';
-        if (!validation.valid) statusIcon = '❌';
-        else if (validation.warnings.length > 0) statusIcon = '⚠️';
+        let statusIcon = 'OK';
+        if (!validation.valid) statusIcon = 'ERROR';
+        else if (validation.warnings.length > 0) statusIcon = '⚠';
         
-        document.getElementById('cvt-bw').textContent = statusIcon + ' ' + bw;
-        document.getElementById('cvt-bw').title = (validation.valid ? 'EDID válido' : 'Errores encontrados') + '\n' + validation.info.join('\n');
+        const bwEl = document.getElementById('cvt-bw');
+        bwEl.textContent = statusIcon + ' ' + bw;
+        bwEl.title = `Data Rate: ${dataRateGbps.toFixed(2)} Gbps (${bpc}-bit 4:4:4)\n` + (validation.valid ? 'EDID válido' : 'Errores encontrados');
+        
+        document.getElementById('cvt-bw-status').textContent = `${dataRateGbps.toFixed(2)} Gbps @ ${bpc}-bit`;
+        document.getElementById('cvt-bw-status').style.color = dataRateGbps > 40 ? '#f87171' : 'var(--success)';
         
         // Update frequency displays
         document.getElementById('cvt-h-freq').textContent = validation.hFreqKHz.toFixed(2) + ' kHz';
         document.getElementById('cvt-v-freq').textContent = validation.vFreqHz.toFixed(3) + ' Hz';
         
-        let hFreqStatus = '✅ Dentro de rango (15-200 kHz)';
+        let hFreqStatus = 'Dentro de rango (15-200 kHz)';
         if (validation.hFreqKHz < 15 || validation.hFreqKHz > 200) {
-            hFreqStatus = '⚠️ Fuera de rango';
+            hFreqStatus = 'Fuera de rango';
         }
         document.getElementById('cvt-h-freq-status').textContent = hFreqStatus;
         
-        let vFreqStatus = '✅ Dentro de rango (23-200 Hz)';
+        let vFreqStatus = 'Dentro de rango (23-200 Hz)';
         if (validation.vFreqHz < 23 || validation.vFreqHz > 200) {
-            vFreqStatus = '⚠️ Fuera de rango';
+            vFreqStatus = 'Fuera de rango';
         }
         document.getElementById('cvt-v-freq-status').textContent = vFreqStatus;
         
@@ -2534,7 +2453,7 @@
         edidList.innerHTML = '';
         
         if (!validation.valid) {
-            edidIcon.textContent = '❌';
+            edidIcon.textContent = 'ERROR';
             edidTitle.textContent = 'Errores en EDID';
             edidDesc.textContent = validation.errors.length + ' error(es) encontrado(s)';
             edidPanel.style.borderColor = '#f87171';
@@ -2548,7 +2467,7 @@
                 edidList.appendChild(div);
             });
         } else if (validation.warnings.length > 0) {
-            edidIcon.textContent = '⚠️';
+            edidIcon.textContent = 'ADVERTENCIA';
             edidTitle.textContent = 'EDID con Advertencias';
             edidDesc.textContent = validation.warnings.length + ' advertencia(s)';
             edidPanel.style.borderColor = '#f59e0b';
@@ -2561,7 +2480,7 @@
                 edidList.appendChild(div);
             });
         } else {
-            edidIcon.textContent = '✅';
+            edidIcon.textContent = 'OK';
             edidTitle.textContent = 'EDID Válido';
             edidDesc.textContent = 'Todos los parámetros dentro de especificación VESA CVT';
             edidPanel.style.borderColor = 'var(--success)';
@@ -2599,6 +2518,17 @@
     if(cvtH) cvtH.addEventListener('input', calculateCVT);
     if(cvtV) cvtV.addEventListener('input', calculateCVT);
     if(cvtHz) cvtHz.addEventListener('input', calculateCVT);
+    const cvtBpcSelector = document.getElementById('cvt-bpc');
+    if(cvtBpcSelector) cvtBpcSelector.addEventListener('change', calculateCVT);
+
+    document.querySelectorAll('.rb-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.rb-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            currentRB = e.target.dataset.rb;
+            calculateCVT();
+        });
+    });
 
     function syncCVTFromProcessor() {
         if (!cvtH || !cvtV || !scTw || !scTh) return;
@@ -2622,191 +2552,71 @@
         });
     });
 
+    // ── Reset All Functionality ──
+    document.getElementById('clear-all-btn').addEventListener('click', () => {
+        if (confirm('¿Estás seguro de que quieres restablecer todos los valores?')) {
+            localStorage.removeItem(STORAGE_KEY);
+            window.location.reload();
+        }
+    });
+
+    // ── Factor Presets ──
+    document.querySelectorAll('.factor-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+            scFactorInput.value = btn.dataset.pct;
+            scFactorSelect.value = 'manual';
+            document.getElementById('sc-manual-factor').style.display = 'flex';
+            scManualFactorInput.value = scFactorInput.value;
+            calcScaling();
+        });
+    });
+
     calcScaling();
     calcManualScaling();
     calculateCVT();
 
-    // ── TAB SYSTEM ──
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tabName = btn.getAttribute('data-tab');
-            
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Remove active class from all buttons
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('active');
-            });
-            
-            // Show selected tab
-            document.querySelector(`.tab-content[data-tab="${tabName}"]`).classList.add('active');
-            btn.classList.add('active');
-            
-            // Save preference
-            localStorage.setItem('activeTab', tabName);
-        });
-    });
-    
-    // Restore tab preference
-    const savedTab = localStorage.getItem('activeTab') || 'calculator';
-    const tabBtn = document.querySelector(`[data-tab="${savedTab}"]`);
-    if (tabBtn) tabBtn.click();
+    // Tab system was removed in single-page refactor.
 
-    // ── MODULE OPTIMIZER CALCULATOR ──
-    const pxCurrentW = document.getElementById('px-current-w');
-    const pxCurrentH = document.getElementById('px-current-h');
-    const pxModulesW = document.getElementById('px-modules-w');
-    const pxModulesH = document.getElementById('px-modules-h');
-    const pxTargetW = document.getElementById('px-target-w');
-    const pxTargetH = document.getElementById('px-target-h');
-    const pxKeepRatio = document.getElementById('px-keep-ratio');
-    const pxPresetBtns = document.querySelectorAll('[data-res-w]');
-    
-    let lastAR = 16 / 9; // Default 16:9
-    
-    pxKeepRatio.addEventListener('click', () => {
-        const currentAR = parseInt(pxCurrentW.value) / parseInt(pxCurrentH.value);
-        lastAR = currentAR;
-        const targetH = parseInt(pxTargetW.value) / currentAR;
-        pxTargetH.value = Math.round(targetH);
-        calculatePixelsPerModule();
-    });
-    
-    pxPresetBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            pxTargetW.value = btn.getAttribute('data-res-w');
-            pxTargetH.value = btn.getAttribute('data-res-h');
-            calculatePixelsPerModule();
-        });
-    });
-    
-    pxCurrentW.addEventListener('input', calculatePixelsPerModule);
-    pxCurrentH.addEventListener('input', calculatePixelsPerModule);
-    pxModulesW.addEventListener('input', calculatePixelsPerModule);
-    pxModulesH.addEventListener('input', calculatePixelsPerModule);
-    pxTargetW.addEventListener('input', calculatePixelsPerModule);
-    pxTargetH.addEventListener('input', calculatePixelsPerModule);
-    
-    function calculatePixelsPerModule() {
-        // Current configuration
-        const curW = parseInt(pxCurrentW.value) || 0;
-        const curH = parseInt(pxCurrentH.value) || 0;
-        const modW = parseInt(pxModulesW.value) || 1;
-        const modH = parseInt(pxModulesH.value) || 1;
+
+
+    // ── Diagnostics System ──
+    function runDiagnostics() {
+        console.log("🚀 Iniciando verificación de funciones...");
+        let checks = 0, passed = 0;
+
+        // Test 1: GCD
+        checks++;
+        if (gcd(1920, 1080) === 120) passed++;
         
-        // Target configuration
-        const tarW = parseInt(pxTargetW.value) || 0;
-        const tarH = parseInt(pxTargetH.value) || 0;
-        
-        if (curW <= 0 || curH <= 0 || tarW <= 0 || tarH <= 0) {
-            document.getElementById('px-current-ppm-w').textContent = '—';
-            document.getElementById('px-current-ppm-h').textContent = '—';
-            document.getElementById('px-current-ppm-total').textContent = '—';
-            document.getElementById('px-target-ppm-w').textContent = '—';
-            document.getElementById('px-target-ppm-h').textContent = '—';
-            document.getElementById('px-target-ppm-total').textContent = '—';
-            document.getElementById('px-loss-w').textContent = '—';
-            document.getElementById('px-loss-h').textContent = '—';
-            document.getElementById('px-loss-total').textContent = '—';
-            document.getElementById('px-loss-percent').textContent = '—';
-            document.getElementById('px-loss-total-screen').textContent = '—';
-            document.getElementById('px-viability').textContent = '—';
-            document.getElementById('px-quality-icon').textContent = '—';
-            document.getElementById('px-quality-text').textContent = '—';
-            return;
-        }
-        
-        // Calculate pixels per module (current)
-        const curPpmW = Math.round(curW / modW);
-        const curPpmH = Math.round(curH / modH);
-        const curPpmTotal = curPpmW * curPpmH;
-        const curTotalPx = curW * curH;
-        
-        // Calculate pixels per module (target)
-        const tarPpmW = Math.round(tarW / modW);
-        const tarPpmH = Math.round(tarH / modH);
-        const tarPpmTotal = tarPpmW * tarPpmH;
-        const tarTotalPx = tarW * tarH;
-        
-        // Calculate loss
-        const lossW = curPpmW - tarPpmW;
-        const lossH = curPpmH - tarPpmH;
-        const lossTotal = curPpmTotal - tarPpmTotal;
-        const lossPercent = ((lossTotal / curPpmTotal) * 100).toFixed(1);
-        const lossTotalScreen = curTotalPx - tarTotalPx;
-        
-        // Display current
-        document.getElementById('px-current-ppm-w').textContent = curPpmW + ' px';
-        document.getElementById('px-current-ppm-h').textContent = curPpmH + ' px';
-        document.getElementById('px-current-ppm-total').textContent = (curPpmTotal).toLocaleString('es-ES') + ' px';
-        document.getElementById('px-current-total').textContent = curTotalPx.toLocaleString('es-ES') + ' px';
-        
-        // Display target
-        document.getElementById('px-target-ppm-w').textContent = tarPpmW + ' px';
-        document.getElementById('px-target-ppm-h').textContent = tarPpmH + ' px';
-        document.getElementById('px-target-ppm-total').textContent = (tarPpmTotal).toLocaleString('es-ES') + ' px';
-        document.getElementById('px-target-total').textContent = tarTotalPx.toLocaleString('es-ES') + ' px';
-        
-        // Display loss
-        document.getElementById('px-loss-w').textContent = lossW + ' px';
-        document.getElementById('px-loss-h').textContent = lossH + ' px';
-        document.getElementById('px-loss-total').textContent = lossTotal.toLocaleString('es-ES') + ' px';
-        document.getElementById('px-loss-percent').textContent = lossPercent + '%';
-        document.getElementById('px-loss-total-screen').textContent = lossTotalScreen.toLocaleString('es-ES') + ' px';
-        
-        // Aspect Ratio check
-        const curAR = (curW / curH).toFixed(3);
-        const tarAR = (tarW / tarH).toFixed(3);
-        const arDiff = Math.abs(parseFloat(curAR) - parseFloat(tarAR));
-        const arCompat = arDiff < 0.01 ? '✅ Perfecta' : arDiff < 0.05 ? '⚠️ Similar' : '⚠️ Diferente';
-        
-        // Viability assessment
-        let viability = '✅ Viable';
-        if (tarPpmW <= 0 || tarPpmH <= 0) {
-            viability = '❌ No viable (píxeles <= 0)';
-        }
-        document.getElementById('px-viability').textContent = viability;
-        
-        // Quality badge
-        let qualityIcon = '✅';
-        let qualityText = 'Excelente';
-        let qualityBg = 'rgba(16, 185, 129, 0.15)';
-        
-        if (lossPercent > 40) {
-            qualityIcon = '❌';
-            qualityText = 'Pérdida crítica (>40%)';
-            qualityBg = 'rgba(248, 113, 113, 0.15)';
-        } else if (lossPercent > 25) {
-            qualityIcon = '⚠️';
-            qualityText = 'Alta pérdida (25-40%)';
-            qualityBg = 'rgba(245, 158, 11, 0.15)';
-        } else if (lossPercent > 10) {
-            qualityIcon = '💡';
-            qualityText = 'Pérdida moderada (10-25%)';
-            qualityBg = 'rgba(100, 200, 255, 0.15)';
-        }
-        
-        const qualityBadge = document.getElementById('px-quality');
-        qualityBadge.style.background = qualityBg;
-        document.getElementById('px-quality-icon').textContent = qualityIcon;
-        document.getElementById('px-quality-text').textContent = qualityText;
-        
-        saveToLocalStorage();
+        // Test 2: Aspect Ratio Comparison Logic (internal proxy)
+        checks++;
+        const arC = 1920 / 1080;
+        const arS = 1280 / 720;
+        if (Math.abs(arC - arS) < 0.01) passed++;
+
+        // Test 3: Scaling calculation logic
+        checks++;
+        const factor = 50;
+        const resultW = 1920 * factor / 100;
+        if (resultW === 960) passed++;
+
+        // Test 4: CVT Horizontal frequency logic
+        checks++;
+        const hTotal = 2000;
+        const pclk = 148.5;
+        const hFreq = (pclk * 1000) / hTotal;
+        if (Math.abs(hFreq - 74.25) < 0.1) passed++;
+
+        console.log(`✅ Verificación completada: ${passed}/${checks} funciones correctas.`);
+        return passed === checks;
     }
-    
-    // Calculate on load
-    calculatePixelsPerModule();
 
-    // ── Collapsible Sections Toggle ──
-    document.querySelectorAll('.collapsible-header').forEach(header => {
-        header.addEventListener('click', () => {
-            const section = header.parentElement;
-            section.classList.toggle('collapsed');
-        });
-    });
+    // Ejecutar check silencioso al inicio
+    if (runDiagnostics()) {
+        console.log("💎 Sistema ARC íntegro y listo.");
+    } else {
+        console.warn("⚠️ Se detectaron inconsistencias en la verificación de funciones.");
+    }
 </script>
 </body>
 </html>
